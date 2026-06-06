@@ -1,0 +1,520 @@
+/* =========================================================
+   1. VARIABLES GLOBALES (Paleta de Colores y Ajustes UI)
+   ========================================================= */
+:root {
+    /* Colores del Entorno Exterior y Base */
+    --bg-outer: #384e56;           /* Gris azulado oscuro de fondo */
+    --bg-inner: #ffffff;           /* Fondo blanco del panel de trabajo */
+    
+    /* Tipografía y Textos */
+    --text-main: #131c24;          /* Tono casi negro para títulos */
+    --text-muted: #748a97;         /* Gris azulado para etiquetas secundarias */
+    --text-light: #ffffff;         /* Texto blanco */
+    
+    /* Paleta de Identidad (Gradientes y Acentos) */
+    --gradient-primary: linear-gradient(135deg, #2b5766 0%, #6892a0 100%);
+    --accent-blue: #3b82f6;        /* Azul eléctrico para estados y botones */
+    
+    /* Radios y Bordes (Enfoque Suave / Rounded UI) */
+    --radius-app: 32px;
+    --radius-card: 20px;
+    --radius-btn: 12px;
+    
+    /* Sombras sutiles para profundidad */
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+/* =========================================================
+   2. RESET GENERAL Y ESTRUCTURA BASE
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-outer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Contenedor maestro que divide la Sidebar del Contenido */
+.app-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1240px;
+    height: 85vh;
+    min-height: 700px;
+}
+
+/* =========================================================
+   3. COMPONENTE: BARRA LATERAL (SIDEBAR) - INTACTA
+   ========================================================= */
+.sidebar {
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    gap: 35px;
+    flex-shrink: 0;
+}
+
+/* Logo de la empresa */
+.sidebar-brand {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-brand i {
+    font-size: 26px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 14px;
+}
+
+/* Menú de enlaces verticales */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #a3b8cc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 75px;
+    height: 75px;
+    border-radius: 18px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.nav-link i {
+    font-size: 24px;
+}
+
+.nav-link:hover {
+    color: var(--text-light);
+}
+
+/* Estado Activo: Resalta la página actual */
+.nav-link.active {
+    background-color: var(--bg-inner);
+    color: var(--bg-outer);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor del Avatar del Usuario */
+.sidebar-user {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-image: url('https://via.placeholder.com/150');
+    background-size: cover;
+    background-position: center;
+}
+
+/* =========================================================
+   4. COMPONENTE: PANEL BLANCO PRINCIPAL (MAIN CONTENT)
+   ========================================================= */
+.main-content {
+    flex: 1;
+    background-color: var(--bg-inner);
+    border-radius: var(--radius-app);
+    padding: 35px 45px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+/* --- Cabecera Superior --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    flex-shrink: 0;
+}
+
+.header-navigation-tabs {
+    display: flex;
+    gap: 24px;
+}
+
+.sub-tab {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding-bottom: 6px;
+    position: relative;
+}
+
+.sub-tab.active {
+    color: var(--text-main);
+}
+
+.sub-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+}
+
+/* Grupo de Avatares del Equipo */
+.header-status-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.team-avatars {
+    display: flex;
+}
+
+.mini-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: var(--text-main);
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--bg-inner);
+    margin-left: -10px;
+}
+
+.mini-avatar:first-child {
+    margin-left: 0;
+}
+
+.status-info {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Base Común de Tarjetas del Dashboard */
+.card {
+    background-color: var(--bg-inner);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: var(--shadow-card);
+}
+
+/* ==========================================================================
+   5. MÓDULO DE AJUSTES Y FORMULARIOS (MÁXIMA SIMETRÍA CON RECALIBRACIÓN)
+   ========================================================================== */
+
+/* Grid adaptativo controlado: fuerza a medir exactamente la mitad del panel sin salirse */
+.settings-layout-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+    width: 100%;
+}
+
+/* Tarjetas estilizadas premium para los formularios */
+.card-premium-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    overflow: hidden;
+    background-color: var(--bg-inner);
+    border: 1px solid #f1f5f9 !important;
+}
+
+/* Encabezados internos de cada bloque */
+.card-header-accent {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background-color: #fafbfc;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.card-header-accent i {
+    font-size: 1.25rem;
+    color: var(--text-muted);
+}
+
+.card-header-accent h3 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+/* Cuerpo interno del formulario */
+.card-body-form {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex-grow: 1;
+}
+
+/* Grupos de campos */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+.form-group label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    letter-spacing: 0.3px;
+}
+
+/* Inputs y Selects unificados */
+.custom-input, 
+.custom-select {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    outline: none;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.custom-input:focus, 
+.custom-select:focus {
+    border-color: #6892a0;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(104, 146, 160, 0.1);
+}
+
+/* Flecha limpia personalizada para los select dropdowns */
+.select-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.select-wrapper::after {
+    content: '\ebad'; 
+    font-family: 'boxicons' !important;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
+    font-size: 1rem;
+}
+
+.custom-select {
+    appearance: none;
+    padding-right: 40px;
+}
+
+/* Estilo para el input deshabilitado del Servidor */
+.custom-input.input-readonly {
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+
+.input-icon-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.input-icon-wrapper i {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    font-size: 1rem;
+}
+
+.input-icon-wrapper .custom-input {
+    padding-left: 36px;
+}
+
+.custom-input.text-bold { font-weight: 600; }
+.custom-input.code-font { font-family: monospace; }
+
+/* Pie de tarjeta con el botón integrado */
+.card-footer-actions {
+    padding: 14px 24px;
+    background-color: #fafbfc;
+    border-top: 1px solid #f1f5f9;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.btn-save-settings {
+    background-color: var(--bg-outer);
+    color: var(--text-light);
+    border: none;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-save-settings:hover {
+    background-color: #2b3d43;
+}
+
+/* =========================================================
+   6. SECCIÓN DE TABLA INFERIOR (RESPONSIVA Y CONTROLADA)
+   ========================================================= */
+
+/* Separador de la sección de la tabla */
+.table-section-divider {
+    margin-top: 32px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid var(--text-main);
+    padding-bottom: 6px;
+    width: fit-content;
+}
+
+.table-section-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.card-table-wrapper {
+    padding: 0 !important;
+    overflow: hidden;
+    border: 1px solid #f1f5f9 !important;
+}
+
+/* Contenedor con scroll interno para que la tabla nunca ensanche la pantalla */
+.responsive-table-container {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.settings-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.settings-table th {
+    background-color: #fafbfc;
+    color: var(--text-muted);
+    font-weight: 600;
+    padding: 14px 20px;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.75rem;
+    letter-spacing: 0.3px;
+}
+
+.settings-table td {
+    padding: 14px 20px;
+    border-bottom: 1px solid #f8fafc;
+    color: var(--text-main);
+    vertical-align: middle;
+}
+
+.settings-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Elementos internos de las celdas */
+.table-user-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user-avatar-dot {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    color: var(--text-main);
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Puntos indicadores de estado (Online / Offline) */
+.user-avatar-dot.online::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 7px;
+    height: 7px;
+    background-color: #1e7e34;
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+}
+
+.user-avatar-dot.offline::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 7px;
+    height: 7px;
+    background-color: var(--text-muted);
+    border: 1.5px solid #ffffff;
+    border-radius: 50%;
+}
+
+.badge-code {
+    font-family: monospace;
+    background-color: #f1f5f9;
+    color: var(--text-muted);
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.78rem;
+}

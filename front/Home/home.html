@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farma Norte - Panel Principal</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class='bx bxs-package'></i>
+                <span>Farma Norte</span>
+            </div>
+            
+           <nav class="sidebar-nav">
+    <a href="../Home/home.html" class="nav-link active" title="Inicio">
+        <i class="bx bx-grid-alt"></i>
+        <span>Inicio</span>
+    </a>
+    
+    <a href="../Inventario/inventario.html" class="nav-link" title="Control de Inventario">
+        <i class="bx bx-box"></i>
+        <span>Inventario</span>
+    </a>
+    
+    <a href="../Reportes/reportes.html" class="nav-link" title="Historial y Reportes">
+        <i class="bx bx-line-chart"></i>
+        <span>Reportes</span>
+    </a>
+    
+    <a href="../Configuracion/configuracion.html" class="nav-link" title="Configuraciones del Sistema">
+        <i class="bx bx-cog"></i>
+        <span>configuración</span>
+    </a>
+</nav>
+
+            <div class="sidebar-user">
+                <div class="avatar-placeholder"></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="header-navigation-tabs">
+                    <a href="home.html" class="sub-tab active" style="text-decoration: none;">Panel Principal</a>
+                    <a href="analisis.html" class="sub-tab" style="text-decoration: none;">Análisis</a>
+                    <a href="auditoria.html" class="sub-tab" style="text-decoration: none;">Auditoría</a>
+                </div>
+                
+                <div class="header-status-group">
+                    <div class="team-avatars">
+                        <span class="mini-avatar">D</span>
+                        <span class="mini-avatar">G</span>
+                        <span class="mini-avatar">C</span>
+                    </div>
+                    <span class="status-info">3 operadores activos</span>
+                </div>
+            </header>
+
+            <div style="background-color: white; border-radius: 15px; padding: 15px 25px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); display: flex; align-items: center; justify-content: space-between; gap: 20px;">
+                
+                <div style="display: flex; align-items: center; background-color: #f1f5f9; border-radius: 10px; padding: 10px 15px; flex-grow: 1;">
+                    <i class='bx bx-search' style="font-size: 1.3rem; color: #64748b; margin-right: 10px;"></i>
+                    <input type="text" placeholder="Búsqueda rápida de medicamentos, principios activos o códigos..." style="border: none; background: transparent; outline: none; width: 100%; font-size: 0.95rem; color: #334155; font-family: inherit;">
+                </div>
+
+                <button style="background-color: #1e3a8a; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-weight: 600; font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 2px 4px rgba(30, 58, 138, 0.3);">
+                    <i class='bx bx-plus' style="font-size: 1.2rem;"></i> Nuevo
+                </button>
+            </div>
+
+            <section class="dashboard-overview-grid">
+
+<div class="dashboard-main-card">
+                    <div>
+                        <h3 style="font-weight: 500;">Visitas de hoy</h3>
+                        <h1>824</h1>
+                        <div style="display: flex; gap: 15px; font-size: 0.85rem; margin-top: 10px;">
+                            <span><i class='bx bx-star'></i> Popularidad 93</span>
+                            <span><i class='bx bx-trending-up'></i> Eficiencia 4.7</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary-action" style="width: fit-content; margin-top: 20px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);">
+                        VER ESTADÍSTICAS COMPLETAS <i class='bx bx-chevron-right'></i>
+                    </button>
+                </div>
+
+                <div class="dashboard-secondary-card" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                    <h3 style="color: var(--text-main); margin-bottom: 15px; font-size: 1.05rem;">Índice de Rotación</h3>
+                    <div class="rotation-circle-widget">
+                        <span style="font-size: 1.5rem; font-weight: 700; color: var(--text-main);">87°</span>
+                    </div>
+                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 15px; line-height: 1.4;">
+                        El índice ha incrementado debido a la reciente actualización.<br> 
+                        <strong style="color: var(--text-main);">¡Sigue adelante y consigue más puntos!</strong>
+                    </p>
+                </div>
+
+            </section>
+
+            <section class="dashboard-secondary-card">
+                <h3 style="color: var(--text-main); margin-bottom: 25px; font-size: 1.05rem;">Rendimiento Financiero</h3>
+                
+                <div style="height: 220px; display: flex; align-items: flex-end; justify-content: space-around; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; color: var(--text-muted); font-size: 0.8rem;">
+                    
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 110px; background-color: var(--accent-blue); border-radius: 6px 6px 0 0; opacity: 0.6;"></div>
+                        <span>Dic</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 160px; background-color: var(--accent-blue); border-radius: 6px 6px 0 0; opacity: 0.8;"></div>
+                        <span>Ene</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 90px; background-color: var(--accent-blue); border-radius: 6px 6px 0 0; opacity: 0.5;"></div>
+                        <span>Feb</span>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+                        <div style="width: 40px; height: 190px; background-color: var(--accent-blue); border-radius: 6px 6px 0 0;"></div>
+                        <span style="color: var(--text-main); font-weight: 600;">Mar</span>
+                    </div>
+
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+
+<script src="../js/main.js"></script>
+<script src="../js/utilidades.js"></script>
+</body>
+</html>

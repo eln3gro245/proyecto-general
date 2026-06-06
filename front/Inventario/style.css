@@ -1,0 +1,455 @@
+
+:root {
+    --bg-outer: #384e56;
+    --bg-inner: #ffffff;
+    --text-main: #131c24;
+    --text-muted: #748a97;
+    --text-light: #ffffff;
+    
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-danger: #ef4444;
+    --accent-warning: #f59e0b;
+    
+    --radius-app: 32px;
+    --radius-card: 20px;
+    --radius-btn: 12px;
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+/* =========================================================
+   2. REUTILIZACIÓN DEL CASCARÓN ESTRUCTURAL (SIDEBAR & LAYOUT)
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+    background-color: var(--bg-outer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1240px;
+    height: 85vh;
+    min-height: 700px;
+}
+
+.sidebar {
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    gap: 35px;
+}
+
+.sidebar-brand {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-brand i {
+    font-size: 26px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 14px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #a3b8cc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 75px;
+    height: 75px;
+    border-radius: 18px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.nav-link i {
+    font-size: 24px;
+}
+
+.nav-link:hover {
+    color: var(--text-light);
+}
+
+/* Ahora resalta Inventario como la página activa */
+.nav-link.active {
+    background-color: var(--bg-inner);
+    color: var(--bg-outer);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-user {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-image: url('https://via.placeholder.com/150');
+    background-size: cover;
+    border-radius: 14px;
+}
+
+.main-content {
+    flex: 1;
+    background-color: var(--bg-inner);
+    border-radius: var(--radius-app);
+    padding: 35px 45px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 24px; /* Espaciado uniforme entre secciones de inventario */
+}
+
+/* --- Cabecera Superior --- */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-navigation-tabs {
+    display: flex;
+    gap: 24px;
+}
+
+.sub-tab {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding-bottom: 6px;
+    position: relative;
+}
+
+.sub-tab.active {
+    color: var(--text-main);
+}
+
+.sub-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+}
+
+/* Botón Registrar Lote */
+.btn-primary-action {
+    background-color: var(--bg-outer);
+    color: var(--text-light);
+    border: none;
+    padding: 12px 20px;
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.btn-primary-action:hover {
+    background-color: #27373d;
+}
+
+/* Estructura Base de Tarjetas */
+.card {
+    background-color: var(--bg-inner);
+    border-radius: var(--radius-card);
+    padding: 24px;
+    border: 1px solid #f1f5f9;
+    box-shadow: var(--shadow-card);
+}
+
+/* =========================================================
+   3. SECCIÓN 1: WIDGETS DE ESTADÍSTICAS Y ALERTAS UI
+   ========================================================= */
+.inventory-summary-widgets {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+}
+
+.widget-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: 12px;
+}
+
+.widget-title-alert {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Estilos de la Alerta Por Agotarse (Icono Rojo) */
+.widget-alert-stock .widget-title-alert i { color: var(--accent-danger); }
+/* Estilos de la Alerta Por Vencerse (Icono Naranja) */
+.widget-alert-expiration .widget-title-alert i { color: var(--accent-warning); }
+
+.stat-group {
+    margin-bottom: 6px;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.stat-trend {
+    font-size: 0.75rem;
+    color: var(--accent-green);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: 500;
+}
+
+/* Listas de Alertas Rápidas */
+.alert-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+}
+
+.item-name {
+    font-weight: 500;
+    color: var(--text-main);
+    max-width: 65%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Badges Dinámicos de Alerta */
+.item-badge {
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: var(--accent-danger);
+}
+
+.badge-warning {
+    background-color: #fef3c7;
+    color: var(--accent-warning);
+}
+
+/* =========================================================
+   4. SECCIÓN 2: CONTROLADOR DE BÚSQUEDA Y FILTROS
+   ========================================================= */
+.inventory-controls-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    gap: 20px;
+}
+
+.search-box-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.search-box-wrapper i {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+}
+
+.search-box-wrapper input {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 0.85rem;
+    color: var(--text-main);
+    font-weight: 500;
+}
+
+.search-box-wrapper input::placeholder {
+    color: #a3b8cc;
+}
+
+.filter-options-group {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-options-group select {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    background-color: #fafafa;
+}
+
+/* =========================================================
+   5. SECCIÓN 3: TABLA DE DATOS MAESTRA
+   ========================================================= */
+.inventory-table-container {
+    padding: 10px 0; /* Espaciado interno horizontal libre para la tabla */
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.data-table th {
+    padding: 16px 24px;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.data-table td {
+    padding: 16px 24px;
+    color: var(--text-main);
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.cell-code {
+    font-family: monospace;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.cell-name strong {
+    color: var(--text-main);
+    display: block;
+    margin-bottom: 2px;
+}
+
+.cell-name small {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+}
+
+.cell-stock {
+    font-weight: 600;
+}
+
+.stock-critical {
+    color: var(--accent-danger);
+}
+
+/* Píldoras de Estado en la Tabla */
+.status-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-success {
+    background-color: #e2fbe8;
+    color: #1e7e34;
+}
+
+.status-danger {
+    background-color: #fee2e2;
+    color: var(--accent-danger);
+}
+
+/* Botones de Acción (Iconos de la derecha) */
+.cell-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-table-action {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-table-action:hover {
+    background-color: #e2e8f0;
+    color: var(--text-main);
+}
+
+.btn-table-action.action-delete:hover {
+    background-color: #fee2e2;
+    color: var(--accent-danger);
+}

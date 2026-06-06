@@ -1,0 +1,470 @@
+/* =========================================================
+   1. VARIABLES GLOBALES DE FARMA NORTE
+   ========================================================= */
+:root {
+    --bg-outer: #384e56;       /* Fondo pizarra exterior de la app */
+    --bg-inner: #ffffff;       /* Fondo blanco del panel interno */
+    --text-main: #131c24;
+    --text-muted: #748a97;
+    --text-light: #ffffff;
+    
+    --accent-blue: #3b82f6;
+    --accent-green: #10b981;
+    --accent-danger: #ef4444;
+    --accent-warning: #f59e0b;
+    
+    --radius-app: 32px;
+    --radius-card: 24px;
+    --radius-btn: 12px;
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.02);
+}
+
+/* =========================================================
+   2. REUTILIZACIÓN DEL CASCARÓN ESTRUCTURAL (LAYOUT Y LUNARES)
+   ========================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, sans-serif;
+}
+
+body {
+    background-color: var(--bg-outer);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.app-layout {
+    display: flex;
+    width: 100%;
+    max-width: 1240px;
+    height: 85vh;
+    min-height: 700px;
+}
+
+/* Menú Lateral */
+.sidebar {
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 0;
+    gap: 35px;
+}
+
+.sidebar-brand {
+    color: var(--text-light);
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.sidebar-brand i {
+    font-size: 26px;
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 14px;
+}
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-grow: 1;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #a3b8cc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    width: 75px;
+    height: 75px;
+    border-radius: 18px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.nav-link i {
+    font-size: 24px;
+}
+
+.nav-link:hover {
+    color: var(--text-light);
+}
+
+.nav-link.active {
+    background-color: var(--bg-inner);
+    color: var(--bg-outer);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-user {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    background-image: url('https://via.placeholder.com/150');
+    background-size: cover;
+    border-radius: 14px;
+}
+
+/* Lienzo Blanco Interior */
+.main-content {
+    flex: 1;
+    background-color: var(--bg-inner);
+    border-radius: var(--radius-app);
+    padding: 35px 45px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    gap: 24px; 
+}
+
+/* Cabecera y Botoneras */
+.main-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-navigation-tabs {
+    display: flex;
+    gap: 24px;
+}
+
+.sub-tab {
+    background: none;
+    border: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding-bottom: 6px;
+    position: relative;
+}
+
+.sub-tab.active {
+    color: var(--text-main);
+}
+
+.sub-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2.5px;
+    background-color: var(--text-main);
+    border-radius: 2px;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-primary-action, .btn-secondary-action {
+    border: none;
+    padding: 10px 18px;
+    border-radius: var(--radius-btn);
+    font-weight: 600;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary-action {
+    background-color: #1e293b;
+    color: var(--text-light);
+}
+
+.btn-primary-action:hover {
+    background-color: #0f172a;
+}
+
+.btn-secondary-action {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+}
+
+.btn-secondary-action:hover {
+    background-color: #e2e8f0;
+}
+
+.inventory-summary-widgets {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr 0.9fr; 
+    gap: 20px;
+    align-items: stretch;
+    margin-bottom: 4px;
+}
+
+.inventory-summary-widgets .card {
+    border-radius: var(--radius-card);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 165px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.02);
+}
+
+.card-main-volume {
+    background: linear-gradient(135deg, #1d6893 0%, #154b6b 100%) !important;
+    border: none !important;
+    color: var(--text-light);
+}
+
+.card-main-volume .widget-title {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.stat-value-group {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.card-main-volume .stat-value {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--text-light);
+    line-height: 1;
+}
+
+.card-main-volume .stat-label {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.card-main-volume .stat-trend {
+    background-color: rgba(255, 255, 255, 0.18);
+    color: var(--text-light);
+    padding: 4px 10px;
+    border-radius: 20px;
+    width: fit-content;
+    font-size: 0.75rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+/* CUADRO 2: Bajas del Mes (Fondo crema/rojo pastel para alertas) */
+.widget-alert-stock {
+    background-color: #fff5f5 !important;
+    border: 1px solid #fee2e2 !important;
+}
+
+.widget-alert-stock .widget-title-alert {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #991b1b;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.widget-alert-stock .widget-title-alert i {
+    color: var(--accent-danger);
+    font-size: 1.1rem;
+}
+
+.widget-alert-stock .stat-value {
+    color: var(--accent-danger);
+    font-size: 2.6rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-top: 10px;
+}
+
+.widget-alert-stock .stat-label {
+    font-size: 0.8rem;
+    color: #7f1d1d;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.widget-alert-stock .stat-label span {
+    color: #b91c1c;
+    font-size: 0.75rem;
+    font-weight: 400;
+}
+
+/* CUADRO 3: Alertas Críticas (Fondo gris neutro limpio) */
+.widget-alert-expiration {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.widget-alert-expiration .widget-title-alert {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.widget-alert-expiration .widget-title-alert i {
+    color: var(--accent-warning);
+    font-size: 1.1rem;
+}
+
+.alert-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: auto;
+}
+
+.alert-item {
+    font-size: 0.8rem;
+    color: var(--text-main);
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.alert-item span {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* =========================================================
+   4. SECCIÓN 2: CONTROLADOR DE BÚSQUEDA Y FILTROS (RANGOS)
+   ========================================================= */
+.inventory-controls-bar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0px 4px;
+    gap: 16px;
+}
+
+.search-box-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box-wrapper i {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+}
+
+.search-box-wrapper input[type="date"] {
+    border: 1px solid #e2e8f0;
+    padding: 6px 12px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    font-weight: 500;
+    outline: none;
+    background-color: #fafafa;
+    cursor: pointer;
+}
+
+.search-box-wrapper .range-separator {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.filter-options-group {
+    margin-left: auto;
+}
+
+.filter-options-group select {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    font-size: 0.8rem;
+    color: var(--text-main);
+    font-weight: 500;
+    outline: none;
+    cursor: pointer;
+    background-color: #fafafa;
+}
+
+.inventory-table-container {
+    padding: 0;
+    overflow-x: auto;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 0.85rem;
+}
+
+.data-table th {
+    padding: 16px 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.data-table td {
+    padding: 18px 12px;
+    color: var(--text-main);
+    border-bottom: 1px solid #f1f5f9;
+    vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f8fafc;
+}
+
+.cell-code {
+    font-family: monospace;
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.status-pill {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.status-success {
+    background-color: #e2fbe8;
+    color: #1e7e34;
+}
+
+.status-danger {
+    background-color: #fee2e2;
+    color: var(--accent-danger);
+}
+
+.status-stable {
+    background-color: #e0f2fe;
+    color: #0369a1;
+}

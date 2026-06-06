@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farma Norte - Historial y Reportes</title>
+    <!-- Iconos de Boxicons -->
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Vinculación del CSS Adaptado -->
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+           
+            <div class="sidebar-brand">
+                <i class='bx bxs-package'></i>
+                <span>Farma Norte</span>
+            </div>
+            
+           <nav class="sidebar-nav">
+    <a href="../Home/home.html" class="nav-link" title="Inicio">
+        <i class="bx bx-grid-alt"></i>
+        <span>Inicio</span>
+    </a>
+    
+    <a href="../Inventario/inventario.html" class="nav-link" title="Control de Inventario">
+        <i class="bx bx-box"></i>
+        <span>Inventario</span>
+    </a>
+    
+    <a href="../Reportes/reportes.html" class="nav-link active" title="Historial y Reportes">
+        <i class="bx bx-line-chart"></i>
+        <span>Reportes</span>
+    </a>
+    
+    <a href="../Configuracion/configuracion.html" class="nav-link" title="Configuraciones del Sistema">
+        <i class="bx bx-cog"></i>
+        <span>configuración</span>
+    </a>
+</nav>
+
+            <div class="sidebar-user">
+                <div class="avatar-placeholder"></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="header-navigation-tabs">
+                    <button class="sub-tab active">Historial de Movimientos</button>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-secondary-action">
+                        <i class='bx bx-file'></i> Exportar Excel
+                    </button>
+                    <button class="btn-primary-action">
+                        <i class='bx bx-printer'></i> Imprimir PDF
+                    </button>
+                </div>
+            </header>
+
+            <section class="inventory-summary-widgets">
+                
+                <div class="card card-main-volume">
+                    <h2 class="widget-title">Balance de Despachos (Mes)</h2>
+                    <div class="stat-value-group">
+                        <span class="stat-value">3,420</span>
+                        <span class="stat-label">Medicamentos entregados</span>
+                    </div>
+                    <span class="stat-trend">
+                        <i class='bx bx-trending-up'></i> +8.5% que el mes anterior
+                    </span>
+                </div>
+
+                <div class="card widget-alert-stock">
+                    <h2 class="widget-title-alert">
+                        <i class='bx bx-trending-down'></i> Bajas del Mes
+                    </h2>
+                    <span class="stat-value">14</span>
+                    <p class="stat-label">
+                        Unidades descartadas<br>
+                        <span>Por vencimiento o daño de lote</span>
+                    </p>
+                </div>
+
+                <div class="card widget-alert-expiration">
+                    <h2 class="widget-title-alert">
+                        <i class='bx bx-error-circle'></i> Alertas Críticas
+                    </h2>
+                    <ul class="alert-list">
+                        <li class="alert-item">
+                            Lotes por vencer (30 días)
+                            <span>2 lotes</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <section class="inventory-controls-bar">
+                <div class="search-box-wrapper">
+                    <i class='bx bx-calendar'></i>
+                    <input type="date" id="fecha-desde" name="fecha-desde" aria-label="Fecha inicial">
+                    <span class="range-separator">hasta</span>
+                    <input type="date" id="fecha-hasta" name="fecha-hasta" aria-label="Fecha final">
+                </div>
+                
+                <div class="filter-options-group">
+                    <select name="filtro-movimiento" id="filtro-movimiento" aria-label="Filtrar por tipo de movimiento">
+                        <option value="todos">Todos los movimientos</option>
+                        <option value="entradas">Entradas</option>
+                        <option value="salidas">Salidas</option>
+                        <option value="bajas">Bajas por Vencimiento</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="inventory-table-container">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Fecha / Hora</th>
+                            <th>Usuario</th>
+                            <th>Acción</th>
+                            <th>Medicamento</th>
+                            <th>N° Lote afectado</th>
+                            <th>Cantidad</th>
+                            <th>Motivo / Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                        <tr>
+                            <td class="cell-code">01 Jun 2026 - 09:15 AM</td>
+                            <td><strong>Cesar A.</strong></td>
+                            <td><span class="status-pill status-success">Entrada</span></td>
+                            <td>Losartán Potásico 50mg</td>
+                            <td class="cell-code">#LOT-2026-11</td>
+                            <td><strong>+1000 uds</strong></td>
+                            <td>Carga inicial de factura FAC-8814</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="cell-code">01 Jun 2026 - 10:30 AM</td>
+                            <td><strong>Gaby M.</strong></td>
+                            <td><span class="status-pill status-stable">Salida</span></td>
+                            <td>Ibuprofeno 400mg</td>
+                            <td class="cell-code">#LOT-2026-04</td>
+                            <td><strong>-2 uds</strong></td>
+                            <td>Venta directa por taquilla</td>
+                        </tr>
+                        
+                        <tr>
+                            <td class="cell-code">31 May 2026 - 06:00 PM</td>
+                            <td><strong>Davi V.</strong></td>
+                            <td><span class="status-pill status-danger">Baja</span></td>
+                            <td>Amoxicilina 500mg</td>
+                            <td class="cell-code">#LOT-2025-02</td>
+                            <td><strong>-5 uds</strong></td>
+                            <td>Lote vencido (Retirado de estante)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+    </div>
+
+<script src="../js/main.js"></script>    
+<script src="../js/utilidades.js"></script>
+<script src="../js/reportes.js"></script> </body>
+</html>
+</body>
+</html>

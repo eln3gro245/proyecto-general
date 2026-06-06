@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Farma Norte - Auditoría del Sistema</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class="bx bxs-package"></i>
+                <span>Farma Norte</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                 <a href="../Home/home.html" class="nav-link active" title="Inicio">
+        <i class="bx bx-grid-alt"></i>
+        <span>Inicio</span>
+    </a>
+                </a>
+                <a href="../Inventario/inventario.html" class="nav-link" title="Control de Inventario">
+                    <i class="bx bx-box"></i>
+                    <span>Inventario</span>
+                </a>
+                <a href="../Reportes/reportes.html" class="nav-link" title="Historial y Reportes">
+                    <i class="bx bx-line-chart"></i>
+                    <span>Reportes</span>
+                </a>
+                <a href="../configuracion/configuracion.html" class="nav-link" title="Configuraciones del Sistema">
+                    <i class="bx bx-cog"></i>
+                    <span>Configuración</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-user">
+                <div class="avatar-placeholder"></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="header-navigation-tabs">
+                    <a href="home.html" class="sub-tab" style="text-decoration: none;">Panel Principal</a>
+                    <a href="analisis.html" class="sub-tab" style="text-decoration: none;">Análisis</a>
+                    <a href="auditoria.html" class="sub-tab active" style="text-decoration: none;">Auditoría</a>
+                </div>
+                
+                <div class="header-status-group">
+                    <div class="team-avatars">
+                        <span class="mini-avatar">D</span>
+                        <span class="mini-avatar">G</span>
+                        <span class="mini-avatar">C</span>
+                    </div>
+                    <span class="status-info">3 operadores activos</span>
+                </div>
+            </header>
+
+            <section class="settings-layout-grid">
+                
+                <div class="card-premium-form">
+                    <div class="card-header-accent">
+                        <i class="bx bx-shield-quarter"></i>
+                        <h3>Resumen de Integridad de Datos</h3>
+                    </div>
+                    <div class="card-body-form">
+                        <div class="form-group">
+                            <label>Última Sincronización de Base de Datos</label>
+                            <input type="text" value="Correcta - Hace 12 minutos" class="custom-input text-bold input-readonly" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>Registros Manuales Alterados Hoy</label>
+                            <input type="text" value="0 discrepancias detectadas" class="custom-input code-font input-readonly" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-premium-form">
+                    <div class="card-header-accent">
+                        <i class="bx bx-user-check"></i>
+                        <h3>Control de Firmas de Operadores</h3>
+
+</div>
+                    <div class="card-body-form">
+                        <div class="form-group">
+                            <label>Llave de Sesión Activa Actuante</label>
+                            <input type="text" value="Session_Token_CesarRoot_2026" class="custom-input code-font input-readonly" readonly="readonly" />
+                        </div>
+                        <div class="form-group">
+                            <label>Nivel de Accesos Concurrentes</label>
+                            <input type="text" value="Seguro - Dentro de la red local" class="custom-input input-readonly" readonly="readonly" />
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <div class="table-section-divider">
+                <h4 class="table-section-title">Log de Eventos Recientes del Sistema (Trazabilidad)</h4>
+            </div>
+
+            <section class="card-table-wrapper">
+                <div class="responsive-table-container">
+                    <table class="settings-table">
+                        <thead>
+                            <tr>
+                                <th>Operador</th>
+                                <th>Acción Realizada</th>
+                                <th>Módulo Alterado</th>
+                                <th>Fecha y Hora</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="table-user-cell">
+                                        <div class="user-avatar-dot online">C</div>
+                                        <strong>Cesar A.</strong>
+                                    </div>
+                                </td>
+                                <td>Modificó stock crítico del lote #L-2032</td>
+                                <td><span class="badge-code">Inventario</span></td>
+                                <td>03 Jun 2026 - 11:15</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="table-user-cell">
+                                        <div class="user-avatar-dot online">G</div>
+                                        <strong>Gaby M.</strong>
+                                    </div>
+                                </td>
+                                <td>Generó reporte consolidado mensual</td>
+                                <td><span class="badge-code">Reportes</span></td>
+                                <td>03 Jun 2026 - 09:30</td>
+                            </tr>
+                            
+                            <tr>
+                                <td>
+                                    <div class="table-user-cell">
+                                        <div class="user-avatar-dot offline">D</div>
+                                        <strong>Davi V.</strong>
+                                    </div>
+                                </td>
+                                <td>Inició sesión desde terminal secundaria</td>
+                                <td><span class="badge-code">Autenticación</span></td>
+                                <td>02 Jun 2026 - 16:40</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+    </div>
+    
+<script src="../js/main.js"></script>
+<script src="../js/utilidades.js"></script>
+</body>
+</html>

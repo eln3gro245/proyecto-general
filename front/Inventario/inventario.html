@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farma Note - Control de Inventario</title>
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-layout">
+        
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class='bx bxs-package'></i>
+                <span>Farma Norte </span>
+            </div>
+            
+             <nav class="sidebar-nav">
+    <a href="../Home/home.html" class="nav-link" title="Inicio">
+        <i class="bx bx-grid-alt"></i>
+        <span>Inicio</span>
+    </a>
+    
+    <a href="../Inventario/inventario.html" class="nav-link active" title="Control de Inventario">
+        <i class="bx bx-box"></i>
+        <span>Inventario</span>
+    </a>
+    
+    <a href="../Reportes/reportes.html" class="nav-link" title="Historial y Reportes">
+        <i class="bx bx-line-chart"></i>
+        <span>Reportes</span>
+    </a>
+    
+    <a href="../Configuracion/configuracion.html" class="nav-link" title="Configuraciones del Sistema">
+        <i class="bx bx-cog"></i>
+        <span>configuración</span>
+    </a>
+</nav>
+
+            <div class="sidebar-user">
+                <div class="avatar-placeholder"></div>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            
+            <header class="main-header">
+                <div class="header-navigation-tabs">
+                    <a href="inventario.html" class="sub-tab active">Inventario General</a>
+                    <a href="lotes.html" class="sub-tab">Lotes Recientes</a>
+                    <a href="categorias.html" class="sub-tab">Categorías</a>
+                </div>
+                
+                <div class="header-actions">
+                    <button class="btn-primary-action" id="btn-registrar-lote">
+                        <i class='bx bx-plus'></i> Registrar Nuevo Lote
+                    </button>
+                </div>
+            </header>
+
+            <section class="inventory-summary-widgets">
+                
+                <div class="card widget-sales-stats">
+                    <h3 class="widget-title">Estadísticas de Venta (Hoy)</h3>
+                    <div class="stat-group">
+                        <span class="stat-value">142</span>
+                        <span class="stat-label">Unidades despachadas</span>
+                    </div>
+                    <div class="stat-trend">
+                        <i class='bx bx-trending-up'></i>
+                        <span>+12% en comparación con ayer</span>
+                    </div>
+                </div>
+
+                <div class="card widget-alert-stock">
+                    <h3 class="widget-title-alert"><i class='bx bx-error-circle'></i> Por Agotarse</h3>
+                    <ul class="alert-list" id="list-stock-critico">
+                        <li class="alert-item">
+                            <span class="item-name">Amoxicilina 500mg</span>
+                            <span class="item-badge badge-danger">5 uds restantes</span>
+                        </li>
+                        <li class="alert-item">
+                            <span class="item-name">Losartán Potásico 50mg</span>
+                            <span class="item-badge badge-warning">12 uds restantes</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="card widget-alert-expiration">
+                    <h3 class="widget-title-alert"><i class='bx bx-time-five'></i> Próximos a Vencer</h3>
+                    <ul class="alert-list" id="list-vencimientos">
+                        <li class="alert-item">
+                            <span class="item-name">Ibuprofeno 400mg (Lote #04)</span>
+                            <span class="item-badge badge-danger">Vence en 8 días</span>
+                        </li>
+                        <li class="alert-item">
+                            <span class="item-name">Acetaminofén Jarabe</span>
+                            <span class="item-badge badge-warning">Vence este mes</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </section>
+
+            <section class="inventory-controls-bar card">
+                <div class="search-box-wrapper">
+                    <i class='bx bx-search-alt'></i>
+                    <input type="text" id="input-search-product" placeholder="Buscar producto por nombre, principio activo o código de barra...">
+                </div>
+                
+                <div class="filter-options-group">
+                    <select id="filter-category">
+                        <option value="todos">Todas las categorías</option>
+                        <option value="analgesicos">Analgésicos</option>
+                        <option value="antibioticos">Antibióticos</option>
+                        <option value="antihipertensivos">Antihipertensivos</option>
+                    </select>
+                    
+                    <select id="filter-status">
+                        <option value="todos">Todos los estados</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="stock-bajo">Stock Bajo</option>
+                        <option value="vencido">Vencido</option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="inventory-table-container card">
+                <table class="data-table" id="table-inventory">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Medicamento / Descripción</th>
+                            <th>Categoría</th>
+                            <th>Precio Unitario</th>
+                            <th>Stock Actual</th>
+                            <th>Fecha Vencimiento</th>
+                            <th>Estado</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-rows-container">
+                        <tr>
+                            <td class="cell-code">#MED-00124</td>
+                            <td class="cell-name"><strong>Ibuprofeno 400mg</strong><br><small>Blister x 10 tabletas</small></td>
+                            <td>Analgésico</td>
+                            <td>$1.50</td>
+                            <td class="cell-stock">142 uds</td>
+                            <td>15 Jun 2026</td>
+                            <td><span class="status-pill status-success">Estable</span></td>
+                            <td class="cell-actions">
+                                <button class="btn-table-action" title="Editar"><i class='bx bx-edit-alt'></i></button>
+                                <button class="btn-table-action action-delete" title="Dar de baja"><i class='bx bx-trash'></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell-code">#MED-00089</td>
+                            <td class="cell-name"><strong>Amoxicilina 500mg</strong><br><small>Cápsulas</small></td>
+                            <td>Antibiótico</td>
+                            <td>$3.20</td>
+                            <td class="cell-stock stock-critical">5 uds</td>
+                            <td>22 Oct 2027</td>
+                            <td><span class="status-pill status-danger">Stock Crítico</span></td>
+                            <td class="cell-actions">
+                                <button class="btn-table-action" title="Editar"><i class='bx bx-edit-alt'></i></button>
+                                <button class="btn-table-action action-delete" title="Dar de baja"><i class='bx bx-trash'></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+        </main>
+
+    </div>
+
+<script src="../js/main.js"></script>
+<script src="../js/utilidades.js"></script>
+<script src="../js/inventario.js"></script>
+</body>
+</html>
