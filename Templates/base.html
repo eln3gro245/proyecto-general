@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Farma Norte - Dashboard{% endblock %}</title>
+    
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    
+    <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/componentes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/inicio.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/reportes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/inventario.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/ajustes.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <i class='bx bx-package'></i>
+                <span>Farma Norte</span>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="/" class="menu-item {% if request.url.path == '/' %}active{% endif %}">
+                    <i class='bx bx-grid-alt'></i> <span>Inicio</span>
+                </a>
+                <a href="/Inventario" class="menu-item {% if 'Inventario' in request.url.path %}active{% endif %}">
+                    <i class='bx bx-clipboard'></i> <span>Inventario</span>
+                </a>
+                <a href="/reportes" class="menu-item">
+                    <i class='bx bx-line-chart'></i> <span>Reportes</span>
+                </a>
+                <a href="/ajustes" class="menu-item">
+                    <i class='bx bx-cog'></i> <span>Ajustes</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="page-card">
+                
+                <header class="top-header">
+                    {% block content %}{% endblock %}
+                </header>
+                
+            </div>
+        </main>
+    </div>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

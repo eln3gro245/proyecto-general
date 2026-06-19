@@ -1,0 +1,50 @@
+/* --- ENCABEZADO DE REPORTES --- */
+.reportes-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.reportes-header h2 {
+    font-size: 1.5rem;
+    color: var(--text-main);
+}
+
+.reportes-header .actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* --- FILTROS Y BARRAS --- */
+.filter-bar {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: #f8fafc;
+    padding: 16px;
+    border-radius: var(--radius-card);
+    margin: 20px 0;
+}
+
+/* --- BADGES (Etiquetas de color para los estados) --- */
+.badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-entrada { background: #dcfce7; color: #166534; }
+.badge-salida { background: #dbeafe; color: #1e40af; }
+.badge-baja { background: #fee2e2; color: #991b1b; }
+
+/* --- AJUSTES ESPECÍFICOS PARA TARJETAS DE COLOR --- */
+.widget-dark {
+    background-color: var(--accent-blue);
+    color: white;
+}
+
+.widget-dark h3, .widget-dark .main-metric {
+    color: white;
+}

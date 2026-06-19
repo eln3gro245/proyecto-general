@@ -1,0 +1,39 @@
+/*VARIABLES GLOBALES DEL SISTEMA */
+:root {
+    /* Paleta de Colores Base */
+    --bg-sidebar: #2b3a4a; /* Gris azulado oscuro del menú lateral */
+    --bg-main: #f1f5f9; /* Fondo general detrás de la tarjeta blanca */
+    --bg-card: #ffffff; /* Fondo de las áreas de trabajo */
+    
+    /* Textos */
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --text-light: #ffffff;
+    
+    /* Colores de Acento y Estados */
+    --gradient-primary: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    --accent-blue: #3b82f6;
+    --accent-danger: #ef4444; /* Para las salidas de stock y vencimientos */
+    --accent-warning: #f59e0b;
+    --accent-green: #10b981;
+    
+    /* Radios y Sombras */
+    --radius-btn: 8px;
+    --radius-card: 24px; /* Borde redondeado amplio de la tarjeta principal */
+    --shadow-soft: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+/* Reseteo básico para asegurar consistencia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-sidebar); /* El color oscuro fluye detrás */
+    color: var(--text-main);
+    display: flex;
+    min-height: 100vh;
+}

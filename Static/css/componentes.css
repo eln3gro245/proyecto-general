@@ -37,7 +37,7 @@
 }
 
 
-/* --- BADGES DE ALERTA Y PRIORIDAD (STOCK) --- */
+/*  BADGES DE ALERTA Y PRIORIDAD (STOCK)  */
 .badge-priority {
     display: inline-block;
     padding: 4px 10px;
@@ -61,4 +61,47 @@
 .badge-priority.estable { 
     background-color: #ecfdf5; 
     color: var(--accent-green); 
+}
+
+/* Contenedor del área de usuario */
+.user-auth-zone {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-info {
+    text-align: right;
+}
+
+.user-name {
+    display: block;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--text-main);
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+/* El círculo del avatar */
+.user-avatar-placeholder {
+    width: 40px;
+    height: 40px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+/* Clase para diferenciar visualmente al administrador */
+.user-role.admin {
+    color: var(--accent-danger);
+    font-weight: bold;
 }

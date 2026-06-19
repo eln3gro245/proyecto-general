@@ -1,0 +1,37 @@
+<div class="dashboard-grid">
+    <article class="card-widget">
+        <h3>Resumen de Integridad de Datos</h3>
+        <p>Última sincronización: {{ auditoria_data.ultima_sincronizacion }}</p>
+        <p>Registros manuales alterados hoy: {{ auditoria_data.registros_alterados }}</p>
+    </article>
+
+    <article class="card-widget">
+        <h3>Control de Firmas de Operadores</h3>
+        <p>Llave de sesión activa: <code>{{ auditoria_data.token_sesion }}</code></p>
+        <p>Nivel de accesos: {{ auditoria_data.nivel_acceso }}</p>
+    </article>
+</div>
+
+<section class="log-section">
+    <h3>Log de Eventos Recientes (Trazabilidad)</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Operador</th>
+                <th>Acción Realizada</th>
+                <th>Módulo Alterado</th>
+                <th>Fecha y Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs_list %}
+            <tr>
+                <td>{{ log.operador }}</td>
+                <td>{{ log.accion }}</td>
+                <td>{{ log.modulo }}</td>
+                <td>{{ log.timestamp }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

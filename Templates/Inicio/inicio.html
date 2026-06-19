@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio - Farma Norte{% endblock %}
+
+{% block content %}
+<div class="sub-navigation">
+    <a href="/?tab=principal" class="tab-link {% if active_tab == 'principal' %}active{% endif %}">Panel Principal</a>
+    <a href="/?tab=analisis" class="tab-link {% if active_tab == 'analisis' %}active{% endif %}">Análisis</a>
+    <a href="/?tab=auditoria" class="tab-link {% if active_tab == 'auditoria' %}active{% endif %}">Auditoría</a>
+</div>
+
+<section class="tab-content">
+    {% if active_tab == 'principal' %}
+        {% include 'Inicio/tabs/principal.html' %}
+    {% elif active_tab == 'analisis' %}
+        {% include 'Inicio/tabs/analisis.html' %}
+    {% elif active_tab == 'auditoria' %}
+        {% include 'Inicio/tabs/auditoria.html' %}
+    {% endif %}
+</section>
+{% endblock %}

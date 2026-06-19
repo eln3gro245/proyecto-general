@@ -1,0 +1,43 @@
+<div class="dashboard-grid">
+    <article class="card-widget">
+        <h3>Proyección de Demanda Inmediata</h3>
+        <div class="form-group">
+            <label>Producto con mayor tendencia de alza</label>
+            <input type="text" value="{{ analisis_data.producto_lider }}" readonly>
+        </div>
+        <div class="form-group">
+            <label>Incremento porcentual estimado</label>
+            <input type="text" value="{{ analisis_data.incremento_estimado }}%" readonly>
+        </div>
+    </article>
+
+    <article class="card-widget">
+        <h3>Métricas del Stock de Seguridad</h3>
+        <p>Algoritmo: {{ analisis_data.modelo_ia }}</p>
+        <p>Productos bajo umbral: {{ analisis_data.productos_bajo_umbral }}</p>
+    </article>
+</div>
+
+<section class="alert-section">
+    <h3>Alertas de Agotamiento de Stock Estimadas</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Medicamento</th>
+                <th>Stock Actual</th>
+                <th>Días cobertura</th>
+                <th>Prioridad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for alerta in alertas_list %}
+            <tr>
+                <td>{{ alerta.nombre }}</td>
+                <td>{{ alerta.stock }} Unidades</td>
+                <td>{{ alerta.dias_cobertura }} días aprox.</td>
+                <td>{{ alerta.nivel_prioridad }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>

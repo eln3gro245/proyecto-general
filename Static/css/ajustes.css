@@ -1,0 +1,78 @@
+/* --- GRID DE AJUSTES --- */
+/* Usamos 2 columnas para los formularios */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* --- ENCABEZADO Y BADGES DE OPERADORES --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.active-operators {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.op-badge {
+    width: 32px;
+    height: 32px;
+    background: #e2e8f0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--text-main);
+    border: 2px solid white;
+    margin-left: -10px;
+}
+
+/* --- AJUSTES DE FORMULARIO --- */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-btn);
+    background: #fcfcfc;
+}
+
+.form-group input:disabled {
+    background: #f1f5f9;
+    cursor: not-allowed;
+}
+
+/* --- BOTONES DE ACCIÓN --- */
+.btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    border-radius: var(--radius-btn);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.btn-primary { background: var(--accent-blue); color: white; }
+.btn-secondary { background: #64748b; color: white; }

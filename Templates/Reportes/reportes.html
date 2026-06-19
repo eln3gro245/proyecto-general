@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - Farma Norte{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/reportes.css') }}">
+{% endblock %}
+
+{% block content %}
+<header class="reportes-header">
+    <h2>Historial de Movimientos</h2>
+    <div class="actions">
+        <button class="btn-secondary"><i class='bx bx-file'></i> Exportar Excel</button>
+        <button class="btn-primary"><i class='bx bx-printer'></i> Imprimir PDF</button>
+    </div>
+</header>
+
+<section class="dashboard-grid">
+    <article class="card-widget widget-dark">
+        <h3>Balance de Despachos (Mes)</h3>
+        <div class="main-metric">{{ reportes.despachos_total }}</div>
+        <p>Medicamentos entregados</p>
+        <small>{{ reportes.despachos_tendencia }}</small>
+    </article>
+
+    <article class="card-widget">
+        <h3>Bajas del Mes</h3>
+        <div class="main-metric">{{ reportes.bajas_total }}</div>
+        <p>Unidades descartadas</p>
+    </article>
+
+    <article class="card-widget">
+        <h3>Alertas Críticas</h3>
+        <p>Lotes por vencer (30 días)</p>
+        <div class="main-metric">{{ reportes.lotes_vencer }}</div>
+    </article>
+</section>
+
+<section class="filter-bar">
+    <input type="date" name="fecha_inicio" value="{{ filtros.inicio }}">
+    <span>hasta</span>
+    <input type="date" name="fecha_fin" value="{{ filtros.fin }}">
+    <select>
+        <option value="todos">Todos los movimientos</option>
+    </select>
+</section>
+
+<section class="log-section">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Fecha / Hora</th>
+                <th>Usuario</th>
+                <th>Acción</th>
+                <th>Medicamento</th>
+                <th>Nº Lote</th>
+                <th>Cantidad</th>
+                <th>Motivo</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for mov in movimientos_list %}
+            <tr>
+                <td>{{ mov.fecha }}</td>
+                <td>{{ mov.usuario }}</td>
+                <td><span class="badge badge-{{ mov.accion_tipo }}">{{ mov.accion }}</span></td>
+                <td>{{ mov.medicamento }}</td>
+                <td>{{ mov.lote }}</td>
+                <td>{{ mov.cantidad }}</td>
+                <td>{{ mov.motivo }}</td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align:center;">No hay movimientos registrados para este periodo.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

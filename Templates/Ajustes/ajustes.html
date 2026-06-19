@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Ajustes - Farma Norte{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/ajustes.css') }}">
+{% endblock %}
+
+{% block content %}
+<header class="page-header">
+    <h2>Configuración del Sistema</h2>
+    <div class="active-operators">
+        {% for op in operadores_activos %}
+        <span class="op-badge">{{ op.inicial }}</span>
+        {% endfor %}
+        <span>{{ operadores_activos|length }} operadores activos</span>
+    </div>
+</header>
+
+<div class="dashboard-grid">
+    <section class="card-widget">
+        <h3><i class='bx bx-slider'></i> Control de Inventario y Alertas</h3>
+        <form action="/ajustes/guardar-parametros" method="POST">
+            <div class="form-group">
+                <label>Margen de Alerta de Vencimiento (Días críticos)</label>
+                <input type="text" name="margen_vencimiento" value="{{ config.margen_vencimiento }}">
+            </div>
+            <div class="form-group">
+                <label>Frecuencia de Análisis Predictivo</label>
+                <input type="text" name="frecuencia_analisis" value="{{ config.frecuencia_analisis }}">
+            </div>
+            <div class="form-group">
+                <label>Servidor de Base de Datos (MySQL)</label>
+                <input type="text" value="{{ config.db_host }}" disabled>
+            </div>
+            <button type="submit" class="btn-primary">Guardar Parámetros</button>
+        </form>
+    </section>
+
+    <section class="card-widget">
+        <h3><i class='bx bx-store'></i> Identidad del Establecimiento</h3>
+        <form action="/ajustes/actualizar-datos" method="POST">
+            <div class="form-group">
+                <label>Nombre de la Farmacia</label>
+                <input type="text" name="nombre_farmacia" value="{{ farmacia.nombre }}">
+            </div>
+            <div class="form-group">
+                <label>Código de Sucursal / Registro Sanitario</label>
+                <input type="text" name="codigo_sucursal" value="{{ farmacia.codigo }}">
+            </div>
+            <div class="form-group">
+                <label>Ubicación de Implementación</label>
+                <input type="text" name="ubicacion" value="{{ farmacia.ubicacion }}">
+            </div>
+            <button type="submit" class="btn-secondary">Actualizar Datos</button>
+        </form>
+    </section>
+</div>
+
+<section class="card-widget">
+    <h3>Personal y Permisos Activos</h3>
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Nombre del Operador</th>
+                <th>Rol Asignado</th>
+                <th>Módulo de Acceso</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for op in personal %}
+            <tr>
+                <td>{{ op.nombre }}</td>
+                <td>{{ op.rol }}</td>
+                <td>{{ op.permisos }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

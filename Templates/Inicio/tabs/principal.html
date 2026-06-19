@@ -1,0 +1,26 @@
+<div class="dashboard-grid">
+    <article class="card-widget">
+        <h3>Visitas de hoy</h3>
+        <div class="main-metric">{{ stats.visitas }}</div>
+        <div class="metric-details">
+            <p>Popularidad {{ stats.popularidad }}</p>
+            <p>Eficiencia {{ stats.eficiencia }}</p>
+        </div>
+        <a href="#" class="btn-link">VER ESTADÍSTICAS COMPLETAS</a>
+    </article>
+
+    <article class="card-widget">
+        <h3>Índice de Rotación</h3>
+        <div class="chart-container">
+            <p class="percentage">{{ stats.rotacion }}%</p>
+        </div>
+        <p>{{ stats.mensaje_rotacion }}</p>
+    </article>
+
+    <article class="card-widget full-width">
+        <h3>Rendimiento Financiero</h3>
+        <div class="chart-box">
+            <p>{{ stats.rendimiento_descripcion }}</p>
+        </div>
+    </article>
+</div>
