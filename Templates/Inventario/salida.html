@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Despacho de Medicamentos{% endblock %}
+
+{% block content %}
+<section class="card card-premium-form">
+    <div class="card-header-accent" style="border-left-color: var(--accent-danger);">
+        <i class="bx bx-export"></i>
+        <h3>Registrar Salida / Despacho de Stock</h3>
+    </div>
+    
+    <form action="/inventario/salida" method="POST" class="card-body-form">
+        <div class="inventario-grid">
+            <div class="form-group">
+                <label for="salida-buscar">Seleccionar Medicamento en Stock</label>
+                <input type="text" id="salida-buscar" name="medicamento_id" class="custom-input" placeholder="Escribe para buscar del stock actual..." required>
+            </div>
+
+            <div class="form-group">
+                <label for="salida-cantidad">Cantidad a Retirar / Despachar</label>
+                <input type="number" id="salida-cantidad" name="cantidad" class="custom-input" placeholder="Ej. 5" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="salida-motivo">Motivo del Despacho / Salida</label>
+                <select id="salida-motivo" name="motivo" class="custom-input" style="height: 46px;">
+                    <option value="venta">Dispensación / Venta Directa</option>
+                    <option value="vencido">Medicamento Vencido / Deteriorado</option>
+                    <option value="donacion">Donación / Caso Social</option>
+                    <option value="ajuste">Ajuste de Auditoría de Inventario</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="salida-operador">Operador Responsable de la Acción</label>
+                <input type="text" id="salida-operador" value="{{ current_user }}" class="custom-input" readonly>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="salida-observaciones">Observaciones adicionales o detalles del caso</label>
+            <textarea id="salida-observaciones" name="observaciones" class="custom-input" placeholder="Escribe aquí cualquier detalle relevante sobre este retiro..." style="height: 100px; resize: none; padding-top: 12px;"></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px;">
+            <a href="/inventario" class="btn-premium secondary">Volver al Panel</a>
+            <button type="submit" class="btn-premium primary" style="background: var(--accent-danger);">Efectuar Retiro de Stock</button>
+        </div>
+    </form>
+</section>
+{% endblock %}

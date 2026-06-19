@@ -1,0 +1,64 @@
+/*estos son los estilos que mas usaremos dentro de las plantillas*/
+
+/* --- Configuracion para los Botones --- */
+.btn-premium {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 18px;
+    border: none;
+    border-radius: var(--radius-btn);
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* Variante para el Boton Principal */
+.btn-premium.primary {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+}
+
+.btn-premium.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(43, 87, 102, 0.2);
+}
+
+/* Variante Botón Secundario / Cancelar (Gris) */
+.btn-premium.secondary {
+    background-color: #f1f5f9;
+    color: var(--text-main);
+    border: 1px solid #e2e8f0;
+}
+
+.btn-premium.secondary:hover {
+    background-color: #e2e8f0;
+}
+
+
+/* --- BADGES DE ALERTA Y PRIORIDAD (STOCK) --- */
+.badge-priority {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+/* Estados de alerta calculados dinámicamente desde el Backend */
+.badge-priority.critica { 
+    background-color: #fef2f2; 
+    color: var(--accent-danger); 
+}
+
+.badge-priority.alta { 
+    background-color: #fffbeb; 
+    color: var(--accent-warning); 
+}
+
+.badge-priority.estable { 
+    background-color: #ecfdf5; 
+    color: var(--accent-green); 
+}

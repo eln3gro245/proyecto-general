@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Entrada de Medicamentos{% endblock %}
+
+{% block content %}
+<section class="card card-premium-form">
+    <div class="card-header-accent">
+        <i class="bx bx-import"></i>
+        <h3>Registrar Ingreso de Stock al Almacén</h3>
+    </div>
+    
+    <form action="/inventario/entrada" method="POST" class="card-body-form">
+        <div class="inventario-grid">
+            <div class="form-group">
+                <label for="med-nombre">Nombre del Medicamento / Insumo</label>
+                <input type="text" id="med-nombre" name="nombre" class="custom-input" placeholder="Ej. Ibuprofeno 400mg" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="med-categoria">Categoría / Clasificación</label>
+                <select id="med-categoria" name="categoria" class="custom-input" style="height: 46px;">
+                    <option value="analgesico">Analgésicos</option>
+                    <option value="antibiotico">Antibióticos</option>
+                    <option value="antiinflamatorio">Antiinflamatorios</option>
+                    <option value="pediatrico">Línea Pediátrica</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="med-cantidad">Cantidad Unidades Ingresantes</label>
+                <input type="number" id="med-cantidad" name="cantidad" class="custom-input" placeholder="Ej. 100" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="med-lote">Código identificador de Lote</label>
+                <input type="text" id="med-lote" name="lote" class="custom-input" placeholder="Ej. LOT-2026-X9" required>
+            </div>
+
+            <div class="form-group">
+                <label for="med-proveedor">Proveedor / Distribuidora</label>
+                <input type="text" id="med-proveedor" name="proveedor" class="custom-input" placeholder="Ej. Droguería FarmaOriente">
+            </div>
+
+            <div class="form-group">
+                <label for="med-vencimiento">Fecha de Vencimiento del Lote</label>
+                <input type="date" id="med-vencimiento" name="fecha_vencimiento" class="custom-input" required>
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px; margin-top: 12px;">
+            <a href="/inventario" class="btn-premium secondary">Cancelar</a>
+            <button type="submit" class="btn-premium primary">Guardar Registro de Entrada</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
