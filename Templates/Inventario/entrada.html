@@ -2,6 +2,10 @@
 
 {% block title %}Entrada de Medicamentos{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/entrada_salida.css') }}">
+{% endblock %}
+
 {% block content %}
 <section class="card card-premium-form">
     <div class="card-header-accent">

@@ -1,0 +1,183 @@
+/* unificamos ambos estilos por que sirven para ambos y tambien con clases personalizadas para el login*/
+
+/* Fondo general que usa tu gris azulado oscuro de la barra lateral */
+.auth-body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif; /* Tu tipografía global */
+    background-color: var(--bg-sidebar); /* Consume tu variable de fondo oscuro */
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Tarjeta contenedora con el radio de 24px idéntico a tu app interna */
+.auth-container {
+    background-color: var(--bg-card); /* Blanco puro nativo */
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 30px;
+    border-radius: var(--radius-card); /* Bordes redondeados de 24px */
+    box-shadow: var(--shadow-soft); /* Tu sombra suave del sistema */
+    animation: authFadeIn 0.4s ease;
+}
+
+/* Encabezado e Identidad de Farma Norte */
+.auth-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* El logotipo flotante usa tu degradado azul premium */
+.auth-logo {
+    width: 60px;
+    height: 60px;
+    background: var(--gradient-primary); /* Tu degradado de azul oscuro a claro */
+    color: var(--text-light); /* Blanco */
+    border-radius: 16px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    box-shadow: 0 4px 12px rgba(30, 58, 138, 0.2);
+}
+
+.auth-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    color: var(--text-main); /* Tu texto principal oscuro */
+    font-weight: 700;
+}
+
+.auth-header p {
+    margin: 5px 0 0 0;
+    font-size: 0.9rem;
+    color: var(--text-muted); /* Tu texto secundario apagado */
+}
+
+/* Formularios y Grupos de Inputs */
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.auth-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.forgot-link, .toggle-link {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.forgot-link:hover {
+    color: var(--accent-blue);
+    text-decoration: underline;
+}
+
+.toggle-link {
+    color: var(--accent-blue); /* Tu azul de acento */
+    font-weight: 600;
+    text-decoration: underline;
+}
+
+/* Contenedor del Icono + Input */
+.auth-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.auth-input-wrapper i {
+    position: absolute;
+    left: 16px;
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    transition: color 0.3s ease;
+}
+
+/* Cajas de texto premium */
+.auth-input-wrapper input {
+    width: 100%;
+    padding: 14px 16px 14px 45px;
+    border: 1px solid #e2e8f0;
+    border-radius: var(--radius-btn); /* Tus botones e inputs comparten el radio de 8px */
+    font-size: 0.9rem;
+    color: var(--text-main);
+    background-color: var(--bg-main); /* Gris claro suave nativo */
+    transition: all 0.3s ease;
+}
+
+/* Efecto focus interactivo */
+.auth-input-wrapper input:focus {
+    outline: none;
+    border-color: var(--accent-blue); /* Ilumina con tu azul de acento */
+    background-color: var(--bg-card);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+}
+
+.auth-input-wrapper input:focus + i {
+    color: var(--accent-blue);
+}
+
+/* Botón de acción principal conectado a tu azul institucional */
+.btn-auth {
+    width: 100%;
+    margin-top: 25px;
+    background-color: var(--bg-sidebar); /* Mismo color de la barra lateral para solidez visual */
+    color: var(--text-light);
+    border: none;
+    padding: 14px 20px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: var(--radius-btn); /* Radio de 8px */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-soft);
+}
+
+.btn-auth:hover {
+    background-color: #1e293b; /* Un tono un pelín más oscuro al pasar el cursor */
+    transform: translateY(-1px);
+}
+
+/* Pie de la tarjeta */
+.auth-footer {
+    text-align: center;
+    margin-top: 30px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 15px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Animación de entrada */
+@keyframes authFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

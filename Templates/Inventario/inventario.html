@@ -4,6 +4,10 @@
 
 {% block title %}Control de Inventario{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/inventario.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="table-actions-bar">
     <div class="search-wrapper">

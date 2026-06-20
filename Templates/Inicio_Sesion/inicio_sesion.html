@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - Farma Norte</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/entrada_salida.css') }}">
+</head>
+<body class="auth-body">
+
+    <div class="auth-container">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="bx bx-package"></i>
+            </div>
+            <h2>Farma Norte</h2>
+            <p>Gestión Inteligente de Inventario Médico</p>
+        </div>
+
+        <form action="/login" method="POST" class="auth-form">
+            <div class="auth-group">
+                <label for="username">Usuario / Correo</label>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Ej. alejandro.m" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="auth-group" style="margin-top: 20px;">
+                <div class="label-row">
+                    <label for="password">Contraseña</label>
+                    <a href="#" class="forgot-link">¿La olvidaste?</a>
+                </div>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-lock-alt"></i>
+                    <input type="password" id="password" name="password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth">
+                <span>Ingresar al Sistema</span>
+                <i class="bx bx-right-arrow-alt"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>¿Eres nuevo personal? <a href="/registro" class="toggle-link">Regístrate aquí</a></p>
+        </div>
+    </div>
+
+</body>
+</html>

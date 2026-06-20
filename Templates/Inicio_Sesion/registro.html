@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - Farma Norte</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/entrada_salida.css') }}">
+</head>
+<body class="auth-body">
+
+    <div class="auth-container" style="max-width: 460px;">
+        <div class="auth-header">
+            <div class="auth-logo">
+                <i class="bx bx-user-plus"></i>
+            </div>
+            <h2>Farma Norte</h2>
+            <p>Registro de Nuevo Operador</p>
+        </div>
+
+        <form action="/registro" method="POST" class="auth-form">
+            <div class="auth-group">
+                <label for="fullname">Nombre Completo</label>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-id-card"></i>
+                    <input type="text" id="fullname" name="fullname" placeholder="Ej. Alejandro M." required>
+                </div>
+            </div>
+
+            <div class="auth-group" style="margin-top: 16px;">
+                <label for="username">Nombre de Usuario</label>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-user"></i>
+                    <input type="text" id="username" name="username" placeholder="Ej. alejandro.m" required autocomplete="username">
+                </div>
+            </div>
+
+            <div class="auth-group" style="margin-top: 16px;">
+                <label for="password">Contraseña del Sistema</label>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-lock-alt"></i>
+                    <input type="password" id="password" name="password" placeholder="Mínimo 8 caracteres" required autocomplete="new-password">
+                </div>
+            </div>
+
+            <div class="auth-group" style="margin-top: 16px;">
+                <label for="confirm_password">Confirmar Contraseña</label>
+                <div class="auth-input-wrapper">
+                    <i class="bx bx-lock-open-alt"></i>
+                    <input type="password" id="confirm_password" name="confirm_password" placeholder="Repite tu contraseña" required autocomplete="new-password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn-auth" style="margin-top: 26px;">
+                <span>Registrar Usuario</span>
+                <i class="bx bx-check-circle"></i>
+            </button>
+        </form>
+
+        <div class="auth-footer">
+            <p>¿Ya tienes una cuenta? <a href="/login" class="toggle-link">Inicia sesión aquí</a></p>
+        </div>
+    </div>
+
+</body>
+</html>
