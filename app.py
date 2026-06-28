@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Request, Form, Query
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 import login as log
 
@@ -18,8 +18,20 @@ async def mostrar_login(request: Request): # por lo que este solo  la rederiza
 
 #por debido a eso hacemos una nueva funcion que se encargara de recibir la informacion del formulario del HTML
 @app.post("/Login", response_class=HTMLResponse)
-async def procesar_login(request: Request):
-    pass
+async def procesar_login(request: Request, username: str = Form(...), password: str  = Form(...)):
+    rol = log.login(username, password)
+    if rol:
+        request.session['usuario'] = username
+        request.session['rol'] = rol
+
+        #nos redirigimos a la siguiente platanlla limpiando el servidor de las peticiones http de formulario
+        return RedirectResponse(url="Inicio/incio.html", status_code=303) #este codigo es el encargado de eso le dice al servido llevame a este url y limpia lo que esta atras
+    else:
+        return plantillas.TemplateResponse("Inicio_Sesion/inicio_sesion.html", {
+                "request": request, 
+                "mensaje": "Error credenciales incorrectas"
+            })
+
 
 #========================== REGISTRAR =============================
 
