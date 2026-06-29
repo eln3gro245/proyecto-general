@@ -1,0 +1,84 @@
+/* admin_global.css - Adaptado a tus variables globales */
+
+/* Contenedor principal que mantiene el espacio dentro de tu estructura */
+.admin-container {
+    padding: 2rem;
+    display: grid;
+    gap: 1.5rem;
+}
+
+/* Tarjeta de trabajo (aprovechando tu --radius-card y --shadow-soft) */
+.card-admin {
+    background-color: var(--bg-card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-soft);
+    padding: 1.5rem;
+    border: 1px solid #e2e8f0; /* Un borde sutil para contraste */
+}
+
+/* Botones con tu estilo de radio */
+.btn-admin {
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius-btn);
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: opacity 0.2s;
+}
+
+.btn-admin.primary {
+    background: var(--gradient-primary);
+    color: var(--text-light);
+}
+
+.btn-admin.secondary {
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+}
+
+/* Tabla de datos profesional */
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.data-table th {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 2px solid var(--bg-main);
+}
+
+.data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--bg-main);
+}
+
+/* Identidad visual diferenciada para Super Admin */
+.super-admin-highlight {
+    border-top: 6px solid var(--accent-blue);
+}
+
+.admin-operational {
+    border-top: 6px solid var(--accent-green);
+}
+
+.stats-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-value {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--text-main);
+    margin: 0.5rem 0;
+}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Centro de Comando - Super Admin{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin_global.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <header class="admin-header">
+        <h1>Centro de Comando: Super Admin</h1>
+        <p>Bienvenido, <strong>{{ nombre_usuario }}</strong>. Acceso total al sistema.</p>
+    </header>
+
+    <section class="stats-grid">
+        {% include 'components/cards_stats.html' %}
+    </section>
+
+    <section class="admin-nav-grid">
+        
+        <div class="card-admin super-admin-highlight">
+            <h3>Gestión de Usuarios</h3>
+            <p>Asignar roles y permisos del personal del sistema.</p>
+            <a href="/superadmin/usuarios" class="btn-admin primary">Gestionar Usuarios</a>
+        </div>
+
+        <div class="card-admin super-admin-highlight">
+            <h3>Auditoría del Sistema</h3>
+            <p>Revisar logs y actividad reciente de cambios críticos.</p>
+            <a href="Inicio/tabs/auditoria.html" class="btn-admin secondary">Ver Auditoría</a>
+        </div>
+    </section>
+
+    <section class="card-admin">
+        <h3>Personal con Privilegios</h3>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Rol</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for admin in lista_admins %}
+                <tr>
+                    <td>{{ admin.username }}</td>
+                    <td>{{ admin.role_name }}</td>
+                    <td><span class="badge-success">Activo</span></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="3">No hay personal administrativo registrado.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+</div>
+{% endblock %}

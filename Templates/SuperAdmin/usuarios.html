@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Gestión de Roles - Super Admin{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/admin_global.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <header class="admin-header">
+        <h1>Gestión de Usuarios y Roles</h1>
+        <p>Administra los permisos de acceso al sistema.</p>
+    </header>
+
+    <section class="card-admin">
+        <form action="/superadmin/actualizar_rol" method="POST">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Usuario</th>
+                        <th>Nombre</th>
+                        <th>Rol Actual</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in usuarios_list %}
+                    <tr>
+                        <td>{{ u.usuario }}</td>
+                        <td>{{ u.pri_nom }} {{ u.pri_ape }}</td>
+                        <td>
+                            <select name="rol_user_{{ u.id }}">
+                                {% for r in roles_list %}
+                                    <option value="{{ r.id }}" {% if u.id_rol == r.id %}selected{% endif %}>
+                                        {{ r.nombre_rol }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </td>
+                        <td>
+                            <button type="submit" class="btn-admin primary">Guardar Cambio</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </form>
+    </section>
+</div>
+{% endblock %}
