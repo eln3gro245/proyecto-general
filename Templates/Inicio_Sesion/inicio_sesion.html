@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Farma Norte</title>
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', path='css/entrada_salida.css') }}">
+    <link rel="stylesheet" href="/static/css/variables.css">
+    <link rel="stylesheet" href="/static/css/entrada_salida.css">
 </head>
 <body class="auth-body">
 
@@ -19,7 +19,7 @@
             <p>Gestión Inteligente de Inventario Médico</p>
         </div>
 
-        <form action="/login" method="POST" class="auth-form">
+        <form action="/" method="POST" class="auth-form">
             <div class="auth-group">
                 <label for="username">Usuario / Correo</label>
                 <div class="auth-input-wrapper">

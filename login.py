@@ -20,7 +20,7 @@ def login(user, password):
         contrasena_hasheada = resultado[0]
         id_rol = resultado[1]
 
-        if seg.verificar_contraseña(password, contrasena_hasheada):
+        if seg.verificar_contrasena(password, contrasena_hasheada):
             return id_rol
         else:
             return False
@@ -54,10 +54,10 @@ def registrar(name, name2, lastname, lastname2, username, password):
     cursor = conn.cursor()
 
     try:
-        contraseña_hasheada = seg.hashear_contrasena(password)
+        contrasena_hasheada = seg.hashear_contrasena(password)
         consulta = """INSERT INTO usuarios(pri_nom, seg_nom, pri_ape, seg_ape, usuario, contrasena, id_rol)
                       VALUES(%s,%s,%s,%s,%s,%s,3)"""
-        datos = (name, name2, lastname, lastname2, username, contraseña_hasheada)
+        datos = (name, name2, lastname, lastname2, username, contrasena_hasheada)
         cursor.execute(consulta, datos)
 
         conn.commit()
