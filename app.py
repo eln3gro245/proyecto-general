@@ -1,9 +1,10 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
+import verificar_sesiones_roles as seguridad
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
-from fastapi import Form
+from fastapi import Form, Depends
 import login as log
 
 app = FastAPI()
@@ -11,6 +12,16 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(SessionMiddleware, secret_key="farma_norte_secret_key_123")
 plantillas = Jinja2Templates(directory="templates")
 
+#========================== PETICIONES REPETITIVAS(CONTEXTO GLOBAL) =============================
+#hacemos es que para que cada vez que necesitemos algo siempre vamos ultilizar para realizar la peticiones al jinja 
+#le agregamos un contexto global que siempre lo tengamos a mano 
+def contexto(request: Request):
+    return {
+        "user_role": request.session.get('rol', 3),       
+        "usuario_actual": request.session.get('usuario') #nota es mejor hacerlo para cada cosa repetitiva de manera separada tanto la funcion como agregarla context
+    }
+
+plantillas.context_processors.append(contexto)
 
 #========================== INICIO DE SESION =============================
 
@@ -80,17 +91,14 @@ async def procesar_registrardor(request: Request,
 
 #========================== DASHBOARD =============================
 
-@app.get("/Inicio", response_class=HTMLResponse)
+@app.get("/Inicio", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
 async def inicio_principal(request: Request, tab: str = Query("principal")):
     tab_actual = tab
 
     if tab_actual not in ["principal", "analisis", "auditoria"]:
         tab_actual = "principal"
 
-    rol_usuario = request.session.get('rol', 3)
 
-    plantillas.env.globals["Activar_tab"] = tab_actual
-    plantillas.env.globals["user_role"] = rol_usuario
     
     return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request})
 
