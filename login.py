@@ -1,5 +1,5 @@
 from database import conexion as con
-import guardia_de_seguridad as seg
+import seguridad.guardia_de_seguridad as seg
 
 #y aqui vemos si sus credenciales son correctas
 def login(user, password):

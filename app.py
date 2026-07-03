@@ -1,8 +1,8 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
-import verificar_sesiones_roles as seguridad
-import consultas_inicio as consulta
+import seguridad.verificar_sesiones_roles as seguridad
+import consultas.consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
 from fastapi import Form, Depends
@@ -149,4 +149,15 @@ async def hacer_ajuste(request: Request):
 
 @app.get("/Reportes", response_class=HTMLResponse)
 async def generacion_de_reportes(request: Request):
-    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request})
+    return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request})
+
+#========================== ADMIN =============================
+
+@app.get("/Admin", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_rol_administrativo))
+async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.obtener_usuario_activo)):
+    datos_admin = consulta.consultas_admin(usuario_activo)
+    return plantillas.TemplateResponse("Admin/admin.html", {"request": request,
+                                                            "datos_admin": datos_admin["nombre_usuario"],
+                                                            "total_productos": datos_admin["total_productos"],
+                                                            "ventas_dia": datos_admin["ventas_dia"],
+                                                            "alertas_criticas": datos_admin["alertas_criticas"]})
