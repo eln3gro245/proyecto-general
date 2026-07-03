@@ -23,7 +23,7 @@ SET @@SESSION.SQL_LOG_BIN= 0;
 -- GTID state at the beginning of the backup 
 --
 
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f1f6c9c-ce30-11f0-9067-1860249ddd2a:1-214,
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f1f6c9c-ce30-11f0-9067-1860249ddd2a:1-225,
 f19f5c68-cb95-11f0-aac4-00e26908fbb7:1-51';
 
 --
@@ -35,8 +35,8 @@ DROP TABLE IF EXISTS `historial_movimientos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `historial_movimientos` (
   `id_movimiento` int NOT NULL AUTO_INCREMENT,
-  `id_lote` int DEFAULT NULL,
-  `id_usuario` int DEFAULT NULL,
+  `id_lote` int NOT NULL,
+  `id_usuario` int NOT NULL,
   `tipo_movimiento` enum('Entrada','Salida') NOT NULL,
   `cantidad` int NOT NULL,
   `fecha_hora` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -66,13 +66,12 @@ DROP TABLE IF EXISTS `lote_inventario`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `lote_inventario` (
   `id_lote` int NOT NULL AUTO_INCREMENT,
-  `id_medicamento` int DEFAULT NULL,
-  `numero_lote` varchar(100) DEFAULT NULL,
+  `id_medicamento` int NOT NULL,
+  `numero_lote` varchar(100) NOT NULL,
   `stock_actual` int DEFAULT '0',
   `fecha_vencimiento` date NOT NULL,
   PRIMARY KEY (`id_lote`),
-  UNIQUE KEY `numero_lote` (`numero_lote`),
-  KEY `id_medicamento` (`id_medicamento`),
+  UNIQUE KEY `uq_medicamento_lote` (`id_medicamento`,`numero_lote`),
   CONSTRAINT `lote_inventario_ibfk_1` FOREIGN KEY (`id_medicamento`) REFERENCES `medicamentos` (`id_medicamento`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -151,7 +150,7 @@ DROP TABLE IF EXISTS `roles`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
-  `id_rol` int NOT NULL AUTO_INCREMENT,
+  `id_rol` int NOT NULL,
   `nombre_rol` varchar(50) NOT NULL,
   PRIMARY KEY (`id_rol`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
@@ -163,6 +162,7 @@ CREATE TABLE `roles` (
 
 LOCK TABLES `roles` WRITE;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'Super Admin'),(2,'Administrador'),(3,'Cajero');
 /*!40000 ALTER TABLE `roles` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -180,13 +180,13 @@ CREATE TABLE `usuarios` (
   `pri_ape` varchar(100) NOT NULL,
   `seg_ape` varchar(100) DEFAULT NULL,
   `usuario` varchar(100) NOT NULL,
-  `contrasena` varchar(255) DEFAULT NULL,
-  `id_rol` int DEFAULT NULL,
+  `contrasena` varchar(255) NOT NULL,
+  `id_rol` int NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE KEY `usuario` (`usuario`),
   KEY `id_rol` (`id_rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,6 +195,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'Administrador','Sistema','Farma','Norte','superadmin','$2b$12$As7YwQd7P4I3rKeX1h2gZu6E3U6gH5o/N9/A/H3Yh2r3XG6p4qK1G',1),(2,'pepe',NULL,'Emeregildo',NULL,'pepe_gildo','$2b$12$GUNH6y7quSZ.j3cXt7qJmugCi9f0ysk2HYcNpmVKZcd/NfLY.r7vO',3);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
@@ -208,4 +209,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-06-21 23:49:20
+-- Dump completed on 2026-07-02 22:11:43

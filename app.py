@@ -2,6 +2,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
 import verificar_sesiones_roles as seguridad
+import consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
 from fastapi import Form, Depends
@@ -94,13 +95,35 @@ async def procesar_registrardor(request: Request,
 @app.get("/Inicio", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
 async def inicio_principal(request: Request, tab: str = Query("principal")):
     tab_actual = tab
+    #========================== SELECTOR DE PLANTILLA =============================
 
     if tab_actual not in ["principal", "analisis", "auditoria"]:
         tab_actual = "principal"
 
+    #nombre tal cual lo espera el html para cambiar de manera dinamica la plantilla que se esta mostrando en el dashboard
+    stats = {}
+    auditoria_data = {}
+    logs_list = []
+
+
+    #========================== PRINCIPAL =============================
+    #ya con esta funcion realiza la consulta para luego enviarle en la peticion de fastapi
+    if tab_actual == "principal":
+        stats = consulta.consultas_globales_principal()
+
+    #========================== AUDITORIA =============================
+    elif tab_actual == "auditoria":
+        auditoria_data, logs_list = consulta.consultas_auditoria()
+
+    #========================== ANALISIS =============================
+    elif tab_actual == "analisis":
+        pass
 
     
-    return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request})
+    return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request, 
+                                                              "stats": stats, 
+                                                              "auditoria_data": auditoria_data, 
+                                                              "logs_list": logs_list})
 
 #========================== INVENTARIO =============================
 
