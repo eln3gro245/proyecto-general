@@ -10,6 +10,7 @@
         </div>
     </div>
 
+    {% if user_role == 1 or user_role == 2 %}
     <div class="card-admin">
         <div class="card-header">
             <h3>Ventas del Día</h3>
@@ -19,8 +20,9 @@
             <p>Transacciones completadas</p>
         </div>
     </div>
+    {% endif %}
 
-    {% if alertas_criticas > 0 %}
+    {% if alertas_criticas > 0 and (user_role == 1 or user_role == 2) %}
     <div class="card-admin" style="border-top: 4px solid var(--accent-danger);">
         <div class="card-header">
             <h3>Alertas Críticas</h3>

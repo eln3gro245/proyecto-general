@@ -6,19 +6,13 @@
     <ul class="nav-links">
         <li><a href="/principal">Inicio</a></li>
         
-        {% if user_role >= 2 %}
+        {% if user_role == 1 or user_role >= 2 %}
             <li><a href="/admin">Panel de Control</a></li>
             <li><a href="/inventario">Inventario</a></li>
             <li><a href="/reportes">Reportes</a></li>
         {% endif %}
 
-        {% if user_role == 1 %}
-            <li class="nav-divider"></li>
-            <li class="admin-only"><strong>Super Admin</strong></li>
-            <li><a href="/superadmin">Centro de Comando</a></li>
-            <li><a href="/superadmin/usuarios">Gestionar Usuarios</a></li>
-            <li><a href="/Inicio/tabs/auditoria.html">Auditoría</a></li>
-        {% endif %}
+        <li><a href="/ajustes">Configuración</a></li>
     </ul>
     
     <div class="sidebar-footer">

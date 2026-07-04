@@ -23,4 +23,12 @@
             <p>{{ stats.rendimiento_descripcion }}</p>
         </div>
     </article>
+
+    {% if user_role == 1 %}
+    <article class="card-widget highlight-admin">
+        <h3>Panel de Control del Sistema</h3>
+        <p>Acceso rápido a registros de seguridad y auditoría.</p>
+        <a href="/?tab=auditoria" class="btn-primary">Ir a Auditoría</a>
+    </article>
+    {% endif %}
 </div>

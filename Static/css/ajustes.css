@@ -1,5 +1,3 @@
-/* --- GRID DE AJUSTES --- */
-/* Usamos 2 columnas para los formularios */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -76,3 +74,32 @@ form {
 
 .btn-primary { background: var(--accent-blue); color: white; }
 .btn-secondary { background: #64748b; color: white; }
+
+/* --- GESTIÓN DE ROLES EN TABLA (SUPER ADMIN) --- */
+.inline-form {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    /* Sobrescribimos el flex-direction column del 'form' general para que este sea horizontal */
+    flex-direction: row; 
+}
+
+.select-rol {
+    padding: 8px 12px; /* Un poco más compacto que el input normal */
+    border: 1px solid #e2e8f0; /* Mismo borde que tus inputs */
+    border-radius: var(--radius-btn); /* Usa tu variable de bordes */
+    background: #fcfcfc; /* Mismo fondo que tus inputs */
+    font-size: 0.9rem;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-rol:focus {
+    border-color: var(--accent-blue); /* Se ilumina con tu color principal al hacer clic */
+}
+
+/* Clase modificadora para botones pequeños en tablas */
+.btn-sm {
+    padding: 8px 14px; /* Sobrescribe el padding de 10px 20px */
+    font-size: 0.85rem;
+}

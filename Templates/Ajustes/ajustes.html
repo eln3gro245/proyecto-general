@@ -65,6 +65,10 @@
                 <th>Nombre del Operador</th>
                 <th>Rol Asignado</th>
                 <th>Módulo de Acceso</th>
+                
+                {% if user_role == 1 %}
+                <th>Gestión de Roles (Super Admin)</th>
+                {% endif %}
             </tr>
         </thead>
         <tbody>
@@ -73,6 +77,22 @@
                 <td>{{ op.nombre }}</td>
                 <td>{{ op.rol }}</td>
                 <td>{{ op.permisos }}</td>
+                
+                {% if user_role == 1 %}
+                <td>
+                    <form action="/ajustes/cambiar-rol" method="POST" class="inline-form">
+                        <input type="hidden" name="usuario_id" value="{{ op.id }}">
+                        
+                        <select name="nuevo_rol_id" class="select-rol">
+                            <option value="1" {% if op.rol_id == 1 %}selected{% endif %}>Super Admin</option>
+                            <option value="2" {% if op.rol_id == 2 %}selected{% endif %}>Administrador</option>
+                            <option value="3" {% if op.rol_id == 3 %}selected{% endif %}>Cajero</option>
+                        </select>
+                        
+                        <button type="submit" class="btn-primary btn-sm">Actualizar</button>
+                    </form>
+                </td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>
