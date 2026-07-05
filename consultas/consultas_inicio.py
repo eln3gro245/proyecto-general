@@ -91,7 +91,7 @@ def consultas_globales_principal():
 
     except Exception as e:
         print(f"Error al ejecutar consultas globales: {e}")
-    finally:#
+    finally:
         if conn:
             conn.close()
 

@@ -1,10 +1,11 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
-from fastapi.templating import Jinja2Templates
 import seguridad.verificar_sesiones_roles as seguridad
+from fastapi.templating import Jinja2Templates
 import consultas.consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
+from prediccion_IA import predicciones as p
 from fastapi import Form, Depends
 import login as log
 
@@ -23,6 +24,15 @@ def contexto(request: Request):
     }
 
 plantillas.context_processors.append(contexto)
+
+#========================== PREDICCIONES DE IA =============================
+#aqui lo que hacemos es que cuando iniciamos el servidor cargamos las prediccones dentro de la base de datos
+@app.on_event("startup")
+async def cargar_prediccoines_IA():
+    try:
+        p.generar_y_guerdar_predicciones_semanales()
+    except Exception as e:
+        print(f"Error al obtener los datos: {e}")
 
 #========================== INICIO DE SESION =============================
 
@@ -107,11 +117,12 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
 
 
     #========================== PRINCIPAL =============================
-    #ya con esta funcion realiza la consulta para luego enviarle en la peticion de fastapi
+    #ya con esta funcion realiza la consulta para luego enviarla en la peticion de fastapi
     if tab_actual == "principal":
         stats = consulta.consultas_globales_principal()
 
     #========================== AUDITORIA =============================
+    #de igual forma con esta funcion realiza la consulta para luego enviarla en la peticion de fastapi
     elif tab_actual == "auditoria":
         auditoria_data, logs_list = consulta.consultas_auditoria()
 

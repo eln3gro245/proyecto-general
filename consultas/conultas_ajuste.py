@@ -1,3 +1,3 @@
 from database import conexion as bd
 
-#def consultas
+#def consultas_ajuste():
