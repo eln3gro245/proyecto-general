@@ -55,7 +55,7 @@ def generar_y_guerdar_predicciones_semanales():
                     elif factor_climatico == 3: clima = 'Temporada de Lluvias'
                     elif factor_climatico == 4: clima = 'Frente Frio'
 
-                    #ahora tenemos el la alerta critica de los medicamentos 
+                    #ahora tenemos la alerta critica de los medicamentos 
                     if cantidad_predicha > 50: alerta = 'ALTA'
                     elif cantidad_predicha > 30: alerta = 'MEDIA'
                     elif cantidad_predicha > 10: alerta = 'BAJA'

@@ -1,13 +1,17 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 import seguridad.verificar_sesiones_roles as seguridad
+from consultas import conultas_ajuste as ajuste
+from consultas import consultas_admin as admin
 from fastapi.templating import Jinja2Templates
 import consultas.consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
 from prediccion_IA import predicciones as p
 from fastapi import Form, Depends
+from datetime import datetime
 import login as log
+import json
 
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -30,7 +34,46 @@ plantillas.context_processors.append(contexto)
 @app.on_event("startup")
 async def cargar_prediccoines_IA():
     try:
-        p.generar_y_guerdar_predicciones_semanales()
+        try:
+            with open("config_sistema.json", "r") as f:
+                confi = json.load(f)
+                frecuencia = confi.get("frecuencia_analisis", "Semanal")
+                margen = confi.get("margen_vencimiento", 30)
+        except FileNotFoundError:
+            frecuencia = "Semanal" #dejamos este dato por si ocurre un error al abrir el json
+            margen = 30
+
+        fecha_hoy = datetime.now()
+        semana = datetime.weekday()
+
+        ultima_ejecucion = ajuste.consultas_ajuste_frecuencia()
+
+        ya_ejecuto_semana = False
+        ya_ejecuto_hoy = False
+
+        if ultima_ejecucion:
+            semana_actual = fecha_hoy.isocalendar()[1]
+            ano_actual = fecha_hoy.year
+
+            semana_ultima = ultima_ejecucion.isocalendar()[1]
+            ano_ultimo = ultima_ejecucion.year
+
+            if semana_ultima == semana_actual and ano_ultimo == ano_actual:
+                ya_ejecuto_semana = True
+            if ultima_ejecucion.date() == fecha_hoy:
+                ya_ejecuto_hoy = True
+        
+        if frecuencia == "Inmediato":
+            p.generar_y_guerdar_predicciones_semanales()
+        elif frecuencia == "Diario" and not ya_ejecuto_hoy:
+            p.generar_y_guerdar_predicciones_semanales()
+        elif frecuencia == "Semanal" and semana == 0 and not ya_ejecuto_semana:
+            p.generar_y_guerdar_predicciones_semanales()
+        
+        lotes_riesgo = ajuste.consulta_ajuste_criticos(margen)
+        if lotes_riesgo:
+            pass
+
     except Exception as e:
         print(f"Error al obtener los datos: {e}")
 
@@ -58,7 +101,6 @@ async def procesar_login(request: Request, username: str = Form(...), password: 
                 "request": request,
                 "mensaje": "Error credenciales incorrectas"
             })
-
 
 #========================== REGISTRAR =============================
 
@@ -130,7 +172,6 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
     elif tab_actual == "analisis":
         pass
 
-    
     return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request, 
                                                               "stats": stats, 
                                                               "auditoria_data": auditoria_data, 
@@ -152,9 +193,49 @@ async def formulario_salida(request: Request):
 
 #========================== AJUSTES =============================
 
-@app.get("/Ajuste", response_class=HTMLResponse)
+@app.get("/Ajuste", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
 async def hacer_ajuste(request: Request):
-    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request})
+    try:
+        with open("config_sistema.json", "r") as f:
+            datos = json.load(f)  
+    except FileNotFoundError:
+        datos = {
+            "margen_vencimiento": 30,
+            "frecuencia_analisis": "Semanal",
+            "server": "localhost"
+        }
+    farmacia = ajuste.obtener_ajuste_farmacia()
+    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request,
+                                                              "op": request.session.get('usuario'),
+                                                              "config": datos,
+                                                              "farmacia": farmacia})
+
+#llamamos a la ruta que hace referencia el html para ejecutar la logica
+@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+def guardar_parametros(request: Request,
+                       margen_vencimiento: str = Form(None),
+                       frecuencia_analisis: str = Form(None)):
+    try:
+        #hacemos un diccionario para usarlo luego
+        datos = {
+            "margen_vencimiento": margen_vencimiento,
+            "frecuencia_analisis": frecuencia_analisis,
+            "server": "localhost"
+        }
+        with open("config_sistema.json", "w") as f:
+            json.dump(datos, f)
+        
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+    
+@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+def actualizacion_datos(request: Request,
+                        nombre_farmacia: str = Form(None),
+                        codigo_sucursal: str = Form(None),
+                        ubicacion: str = Form(None)):
+    ajuste.modificar_ajuste_farmacia(nombre_farmacia, codigo_sucursal, ubicacion)
 
 #========================== REPORTES =============================
 
@@ -166,7 +247,7 @@ async def generacion_de_reportes(request: Request):
 
 @app.get("/Admin", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_rol_administrativo))
 async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.obtener_usuario_activo)):
-    datos_admin = consulta.consultas_admin(usuario_activo)
+    datos_admin = admin.consultas_admin(usuario_activo)
     return plantillas.TemplateResponse("Admin/admin.html", {"request": request,
                                                             "datos_admin": datos_admin["nombre_usuario"],
                                                             "total_productos": datos_admin["total_productos"],

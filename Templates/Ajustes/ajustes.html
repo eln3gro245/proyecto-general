@@ -23,11 +23,17 @@
         <form action="/ajustes/guardar-parametros" method="POST">
             <div class="form-group">
                 <label>Margen de Alerta de Vencimiento (Días críticos)</label>
-                <input type="text" name="margen_vencimiento" value="{{ config.margen_vencimiento }}">
+                /* aqui lo que hacemos es pasarle el tiempo que quiere el administrador que le avisen del margen de  vencimiento de los medicamentos*/
+                <input type="number" name="margen_vencimiento" value="{{ config.margen_vencimiento }}" min="1">
             </div>
             <div class="form-group">
                 <label>Frecuencia de Análisis Predictivo</label>
-                <input type="text" name="frecuencia_analisis" value="{{ config.frecuencia_analisis }}">
+                /* vemos el tiempo con el que se hacen la predicciones de la IA*/
+                <select type="text" name="frecuencia_analisis" value="{{ config.frecuencia_analisis }}">
+                    <option value="Inmediato" {% if config.frecuencia_analisis == 'Inmediato' %}selected{% endif %}>Manual(Ejecutar Ahora)</option>
+                    <option value="Diario" {% if config.frecuencia_analisis == 'Diario' %}selected{% endif %}>Diario</option>
+                    <option value="Semanal" {% if config.frecuencia_analisis == 'Semanal' %}selected{% endif %}>Semanal</option>
+                </select>
             </div>
             <div class="form-group">
                 <label>Servidor de Base de Datos (MySQL)</label>
