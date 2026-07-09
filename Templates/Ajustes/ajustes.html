@@ -11,7 +11,7 @@
     <h2>Configuración del Sistema</h2>
     <div class="active-operators">
         {% for op in operadores_activos %}
-        <span class="op-badge">{{ op.inicial }}</span>
+        <span class="op-badge">{{ op.nombre }}</span>
         {% endfor %}
         <span>{{ operadores_activos|length }} operadores activos</span>
     </div>
@@ -82,7 +82,6 @@
             <tr>
                 <td>{{ op.nombre }}</td>
                 <td>{{ op.rol }}</td>
-                <td>{{ op.permisos }}</td>
                 
                 {% if user_role == 1 %}
                 <td>
@@ -90,8 +89,7 @@
                         <input type="hidden" name="usuario_id" value="{{ op.id }}">
                         
                         <select name="nuevo_rol_id" class="select-rol">
-                            <option value="1" {% if op.rol_id == 1 %}selected{% endif %}>Super Admin</option>
-                            <option value="2" {% if op.rol_id == 2 %}selected{% endif %}>Administrador</option>
+                            <option value="2" {% if op.rol_id == 2 %}selected{% endif %}>Admin</option>
                             <option value="3" {% if op.rol_id == 3 %}selected{% endif %}>Cajero</option>
                         </select>
                         

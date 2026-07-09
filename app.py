@@ -205,8 +205,13 @@ async def hacer_ajuste(request: Request):
             "server": "localhost"
         }
     farmacia = ajuste.obtener_ajuste_farmacia()
+    usuario = {
+        "nombre": request.session.get('usuario'),
+        "id": request.session.get('rol')
+    }
+
     return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request,
-                                                              "op": request.session.get('usuario'),
+                                                              "op": usuario,
                                                               "config": datos,
                                                               "farmacia": farmacia})
 
@@ -230,12 +235,29 @@ def guardar_parametros(request: Request,
         print(f"Error: {e}")
         return RedirectResponse(url="/Ajuste?error=true", status_code=303)
     
-@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.post("/ajustes/actualizar-datos", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
 def actualizacion_datos(request: Request,
                         nombre_farmacia: str = Form(None),
                         codigo_sucursal: str = Form(None),
                         ubicacion: str = Form(None)):
-    ajuste.modificar_ajuste_farmacia(nombre_farmacia, codigo_sucursal, ubicacion)
+    try:
+        ajuste.modificar_ajuste_farmacia(nombre_farmacia, codigo_sucursal, ubicacion)
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+
+@app.post("/ajustes/cambiar-rol", response_class=HTMLResponse, dependencies=Depends(seguridad.Verificamos_al_papa_de_los_helados))
+def cambio_rol(request: Request,
+               usuario_id: int = Form(...),
+               nuevo_rol_id: int = Form(...)):
+    try:
+        ajuste.cambio_rol(nuevo_rol_id, usuario_id)
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+    
 
 #========================== REPORTES =============================
 

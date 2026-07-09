@@ -1,6 +1,7 @@
 from database import conexion as bd
 import pymysql
 
+#aqui tenemos las distintas cosultas para la ruta de ajuste para cada caso requerido
 def consultas_ajuste_frecuencia():
     try:
         conn = bd.conexion_db()
@@ -60,6 +61,7 @@ def obtener_ajuste_farmacia(nombre, codigo, ubi):
         if conn:
             conn.close()
 
+#ya apartir de aqui la funciones modifican el html
 def modificar_ajuste_farmacia(nombre: str, codigo: str, ubi: str):
     try:
         conn = bd.conexion_db()
@@ -72,6 +74,26 @@ def modificar_ajuste_farmacia(nombre: str, codigo: str, ubi: str):
             valores = (nombre, codigo, ubi)
             cursor.execute(sql_farmacia, valores)
             conn.commit() 
+        return True
+    except Exception as e:
+        print(f"Error al actualizar los datos: {e}")
+        return False
+    finally:
+        if conn:
+            conn.close()
+
+#esta funcion solo la ejecuta el super admin
+def cambio_rol(id: int, usuario_id: int):
+    try:
+        conn = bd.conexion_db()
+
+        with conn.cursor() as cursor:
+
+            sql_rol = "UPDATE usuarios SET id_rol = %s WHERE id_usuario = %s"
+            datos = (id, usuario_id)
+            cursor.execute(sql_rol, datos)
+
+            conn.commit()
         return True
     except Exception as e:
         print(f"Error al actualizar los datos: {e}")
