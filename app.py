@@ -153,7 +153,7 @@ async def procesar_registrardor(request: Request,
 
 #========================== DASHBOARD =============================
 
-@app.get("/Inicio", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.get("/Inicio", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def inicio_principal(request: Request, tab: str = Query("principal")):
     tab_actual = tab
     #========================== SELECTOR DE PLANTILLA =============================
@@ -202,7 +202,7 @@ async def formulario_salida(request: Request):
 
 #========================== AJUSTES =============================
 
-@app.get("/Ajuste", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.get("/Ajuste", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def hacer_ajuste(request: Request):
     try:
         with open("config_sistema.json", "r") as f:
@@ -225,7 +225,7 @@ async def hacer_ajuste(request: Request):
                                                               "farmacia": farmacia})
 
 #llamamos a la ruta que hace referencia el html para ejecutar la logica
-@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 def guardar_parametros(request: Request,
                        margen_vencimiento: str = Form(None),
                        frecuencia_analisis: str = Form(None)):
@@ -245,7 +245,7 @@ def guardar_parametros(request: Request,
         print(f"Error: {e}")
         return RedirectResponse(url="/Ajuste?error=true", status_code=303)
     
-@app.post("/ajustes/actualizar-datos", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.post("/ajustes/actualizar-datos", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 def actualizacion_datos(request: Request,
                         nombre_farmacia: str = Form(None),
                         codigo_sucursal: str = Form(None),
@@ -257,7 +257,7 @@ def actualizacion_datos(request: Request,
         print(f"Error: {e}")
         return RedirectResponse(url="/Ajuste?error=true", status_code=303)
 
-@app.post("/ajustes/cambiar-rol", response_class=HTMLResponse, dependencies=Depends(seguridad.Verificamos_al_papa_de_los_helados))
+@app.post("/ajustes/cambiar-rol", response_class=HTMLResponse, dependencies=[Depends(seguridad.Verificamos_al_papa_de_los_helados)])
 def cambio_rol(request: Request,
                usuario_id: int = Form(...),
                nuevo_rol_id: int = Form(...)):
@@ -271,7 +271,7 @@ def cambio_rol(request: Request,
 
 #========================== REPORTES =============================
 
-@app.get("/Reportes", response_class=HTMLResponse)
+@app.get("/Reportes", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
 async def generacion_de_reportes(request: Request,
                                  fecha_inicio: str = Query(None),
                                  fecha_fin: str = Query(None)):
@@ -290,8 +290,8 @@ async def generacion_de_reportes(request: Request,
 
 #========================== ADMIN =============================
 
-@app.get("/Admin", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_rol_administrativo))
-async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.obtener_usuario_activo)):
+@app.get("/Admin", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
+async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.verificar_entrada)):
     datos_admin = admin.consultas_admin(usuario_activo)
     return plantillas.TemplateResponse("Admin/admin.html", {"request": request,
                                                             "datos_admin": datos_admin["nombre_usuario"],
