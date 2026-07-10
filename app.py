@@ -1,6 +1,7 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 import seguridad.verificar_sesiones_roles as seguridad
+from consultas import consultas_reporte as reportes
 from consultas import conultas_ajuste as ajuste
 from consultas import consultas_admin as admin
 from fastapi.templating import Jinja2Templates
@@ -8,10 +9,10 @@ import consultas.consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
 from prediccion_IA import predicciones as p
+from datetime import datetime, timedelta
 from fastapi import Form, Depends
 import enviar_correos as correo
 from dotenv import load_dotenv
-from datetime import datetime
 import login as log
 import json
 import os
@@ -271,8 +272,21 @@ def cambio_rol(request: Request,
 #========================== REPORTES =============================
 
 @app.get("/Reportes", response_class=HTMLResponse)
-async def generacion_de_reportes(request: Request):
-    return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request})
+async def generacion_de_reportes(request: Request,
+                                 fecha_inicio: str = Query(None),
+                                 fecha_fin: str = Query(None)):
+    #de normal las fechas estaran en none pero las vamos a calcular ahora por los 30 dias automaticamente
+    if not fecha_fin:
+        fecha_fin = datetime.now().strftime("%Y-%m-%d")
+    if not fecha_inicio:
+        fecha_inicio = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    
+    datos_reportes = reportes.consulta_reporte(fecha_inicio, fecha_fin)
+
+    return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request,
+                                                                  "reportes": datos_reportes,
+                                                                  "filtros": {"inicio": fecha_inicio, "fin": fecha_fin},
+                                                                  "mov": datos_reportes["movimientos"]})
 
 #========================== ADMIN =============================
 
