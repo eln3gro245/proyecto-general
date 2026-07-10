@@ -9,13 +9,17 @@ from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
 from prediccion_IA import predicciones as p
 from fastapi import Form, Depends
+import enviar_correos as correo
+from dotenv import load_dotenv
 from datetime import datetime
 import login as log
 import json
+import os
 
+load_dotenv()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.add_middleware(SessionMiddleware, secret_key="farma_norte_secret_key_123")
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRECT_KEY"))
 plantillas = Jinja2Templates(directory="templates")
 
 #========================== PETICIONES REPETITIVAS(CONTEXTO GLOBAL) =============================
@@ -63,12 +67,16 @@ async def cargar_prediccoines_IA():
             if ultima_ejecucion.date() == fecha_hoy:
                 ya_ejecuto_hoy = True
         
+        #ademas configuramos con los ajuste para activar las predicciones de la IA 
         if frecuencia == "Inmediato":
             p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
         elif frecuencia == "Diario" and not ya_ejecuto_hoy:
             p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
         elif frecuencia == "Semanal" and semana == 0 and not ya_ejecuto_semana:
             p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
         
         lotes_riesgo = ajuste.consulta_ajuste_criticos(margen)
         if lotes_riesgo:
@@ -225,9 +233,10 @@ def guardar_parametros(request: Request,
         datos = {
             "margen_vencimiento": margen_vencimiento,
             "frecuencia_analisis": frecuencia_analisis,
-            "server": "localhost"
+            "server": "localhost",
+            "correo": os.getenv("CORREO")
         }
-        with open("config_sistema.json", "w") as f:
+        with open("config_sistema.json", "r") as f:
             json.dump(datos, f)
         
         return RedirectResponse(url="/Ajuste", status_code=303)

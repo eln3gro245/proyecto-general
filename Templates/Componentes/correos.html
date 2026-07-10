@@ -1,0 +1,32 @@
+<div class="email-container">
+    <header class="email-header">
+        <h1>Farma Norte</h1>
+        <p>Orden de Reposición Automatizada</p>
+    </header>
+
+    <div class="email-body">
+        <p>Estimado distribuidor,</p>
+        <p>El sistema ha generado la siguiente sugerencia de pedido:</p>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Medicamento</th>
+                    <th>Cantidad</th>
+                    <th>Motivo / Criterio</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{'producto.medicamento'}}</td>
+                    <td class="text-center">{{'producto.cantidad_sugerida'}}</td>
+                    <td>{{'producto.motivo'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <footer class="email-footer">
+        <p>Este es un mensaje generado automáticamente. Sistema Farma Norte.</p>
+    </footer>
+</div>
