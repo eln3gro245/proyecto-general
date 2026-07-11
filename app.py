@@ -164,6 +164,8 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
     #nombre tal cual lo espera el html para cambiar de manera dinamica la plantilla que se esta mostrando en el dashboard
     stats = {}
     auditoria_data = {}
+    analisis_data = {}
+    alerta = {}
     logs_list = []
 
 
@@ -179,12 +181,14 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
 
     #========================== ANALISIS =============================
     elif tab_actual == "analisis":
-        pass
+        analisis_data, alerta = consulta.consultas_globales_analisis()
 
     return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request, 
                                                               "stats": stats, 
                                                               "auditoria_data": auditoria_data, 
-                                                              "logs_list": logs_list})
+                                                              "logs_list": logs_list,
+                                                              "analisis_data": analisis_data,
+                                                              "alerta": alerta})
 
 #========================== INVENTARIO =============================
 

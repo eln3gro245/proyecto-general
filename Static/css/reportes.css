@@ -48,3 +48,21 @@
 .widget-dark h3, .widget-dark .main-metric {
     color: white;
 }
+
+/*esto es para imprirmir los PDFs*/
+@media print {
+    /* Ocultamos el menú de navegación lateral, la barra de filtros y los botones */
+    .sidebar, .filter-bar, .actions, .menu-navegacion { 
+        display: none !important; 
+    }
+    
+    /* Hacemos que el reporte ocupe toda la página e imprima los colores de fondo */
+    body, .main-content {
+        padding: 0 !important;
+        margin: 0 !important;
+        background: white !important;
+        color: black !important;
+        -webkit-print-color-adjust: exact; /* Mantiene los colores de tus tarjetas */
+        print-color-adjust: exact;
+    }
+}

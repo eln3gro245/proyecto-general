@@ -25,11 +25,11 @@ def consulta_ajuste_criticos(margen: int):
         with conn.cursor() as cursor:
             sql_critico = """
                 SELECT l.numero_lote, m.nombre, l.stock_actual, l.fecha_vencimiento,
-                    DATADIFF(l.fecha_vencimiento, CURDATE()) AS dias_restantes
+                    DATEDIFF(l.fecha_vencimiento, CURDATE()) AS dias_restantes
                 FROM lote_inventario l
                 INNER JOIN medicamentos m ON l.id_medicamento = m.id_medicamento
-                WHERE DATADIFF(l.fecha_vencimiento, CURDATE()) <= %s
-                    AND DATADIFF(l.fecha_vencimiento, CURDATE()) > 0
+                WHERE DATEDIFF(l.fecha_vencimiento, CURDATE()) <= %s
+                    AND DATEDIFF(l.fecha_vencimiento, CURDATE()) > 0
                     AND l.stock_actual > 0
             """
             datos = (margen,)
