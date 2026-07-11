@@ -49,7 +49,7 @@ async def cargar_prediccoines_IA():
             margen = 30
 
         fecha_hoy = datetime.now()
-        semana = datetime.weekday()
+        semana = fecha_hoy.weekday()
 
         ultima_ejecucion = ajuste.consultas_ajuste_frecuencia()
 
