@@ -193,13 +193,13 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
 
 #========================== INVENTARIO =============================
 
-@app.get("/Inventario", response_class=HTMLResponse)
+@app.get("/Inventario", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def ver_inventario(request: Request):
     inventario = ver.obtener_inventario()
     return plantillas.TemplateResponse("Inventario/inventario.html", {"request": request,
                                                                       "medicamentos": inventario})
 
-@app.post("/Inventario/Entrada", response_class=HTMLResponse)
+@app.post("/Inventario/Entrada", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
 async def formulario_entrada(request: Request,
                              nombre: str = Form(...),
                              categoria: str = Form(...),
@@ -215,7 +215,7 @@ async def formulario_entrada(request: Request,
         print(f"Error en entrada: {e}")
         return {"error": "No se pudo registrar la entrada"}
 
-@app.post("/Inventario/Salida", response_class=HTMLResponse)
+@app.post("/Inventario/Salida", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def formulario_salida(request: Request,
                             medicamento_id: str = Form(...),
                             cantidad: int = Form(...),
