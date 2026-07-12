@@ -2,6 +2,7 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 import seguridad.verificar_sesiones_roles as seguridad
 from consultas import consultas_reporte as reportes
+from consultas import consultas_inventario as ver
 from consultas import conultas_ajuste as ajuste
 from consultas import consultas_admin as admin
 from fastapi.templating import Jinja2Templates
@@ -177,7 +178,7 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
     #========================== AUDITORIA =============================
     #de igual forma con esta funcion realiza la consulta para luego enviarla en la peticion de fastapi
     elif tab_actual == "auditoria":
-        auditoria_data, logs_list = consulta.consultas_auditoria()
+        auditoria_data, logs_list = consulta.consultas_globales_auditoria()
 
     #========================== ANALISIS =============================
     elif tab_actual == "analisis":
@@ -194,15 +195,38 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
 
 @app.get("/Inventario", response_class=HTMLResponse)
 async def ver_inventario(request: Request):
-    return plantillas.TemplateResponse("Inventario/inventario.html", {"request": request})
+    inventario = ver.obtener_inventario()
+    return plantillas.TemplateResponse("Inventario/inventario.html", {"request": request,
+                                                                      "medicamentos": inventario})
 
-@app.get("/Inventario/Entrada", response_class=HTMLResponse)
-async def formulario_entrada(request: Request):
-    return plantillas.TemplateResponse("Inventario/entrada.html", {"request": request})
+@app.post("/Inventario/Entrada", response_class=HTMLResponse)
+async def formulario_entrada(request: Request,
+                             nombre: str = Form(...),
+                             categoria: str = Form(...),
+                             cantidad: int = Form(...),
+                             lote: str = Form(...),
+                             proveedor: str = Form(None), #este por ahora no lo vamos a usar por ahora
+                             fecha_vencimiento: str = Form(...)):
+    try:
+        usuario = request.session.get('usuario')
+        ver.entrada_inventario(nombre, categoria, cantidad, lote, fecha_vencimiento, usuario)
+        return RedirectResponse(url="/Inventario", status_code=303)
+    except Exception as e:
+        print(f"Error en entrada: {e}")
+        return {"error": "No se pudo registrar la entrada"}
 
-@app.get("/Inventario/Salida", response_class=HTMLResponse)
-async def formulario_salida(request: Request):
-    return plantillas.TemplateResponse("Inventario/salida.html", {"request": request})
+@app.post("/Inventario/Salida", response_class=HTMLResponse)
+async def formulario_salida(request: Request,
+                            medicamento_id: str = Form(...),
+                            cantidad: int = Form(...),
+                            motivo: str = Form(...)):
+    try:
+        usuario = request.session.get('usuario')
+        ver.salida_inventario(medicamento_id, cantidad, motivo, usuario)
+        return RedirectResponse(url="/Inventario", status_code=303)
+    except Exception as e:
+        print(f"Error en salida: {e}")
+        return {"error": "No se pudo procesar el despacho"}
 
 #========================== AJUSTES =============================
 

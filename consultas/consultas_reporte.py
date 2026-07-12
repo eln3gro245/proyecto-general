@@ -79,7 +79,7 @@ def consulta_reporte(inicio, fin):
                 "lotes_vencer": alertas,
                 "movimientos": movimientos
             }
-    
+        return reportes
     except Exception as e:
         print(f"❌ Error en consultas_reportes: {e}")
     finally:
