@@ -1,16 +1,26 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
-from fastapi.templating import Jinja2Templates
 import seguridad.verificar_sesiones_roles as seguridad
+from consultas import consultas_reporte as reportes
+from consultas import conultas_ajuste as ajuste
+from consultas import consultas_admin as admin
+from fastapi.templating import Jinja2Templates
 import consultas.consultas_inicio as consulta
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request, Query
+from prediccion_IA import predicciones as p
+from datetime import datetime, timedelta
 from fastapi import Form, Depends
+import enviar_correos as correo
+from dotenv import load_dotenv
 import login as log
+import json
+import os
 
+load_dotenv()
 app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
-app.add_middleware(SessionMiddleware, secret_key="farma_norte_secret_key_123")
+app.add_middleware(SessionMiddleware, secret_key=os.getenv("SECRECT_KEY"))
 plantillas = Jinja2Templates(directory="templates")
 
 #========================== PETICIONES REPETITIVAS(CONTEXTO GLOBAL) =============================
@@ -23,6 +33,58 @@ def contexto(request: Request):
     }
 
 plantillas.context_processors.append(contexto)
+
+#========================== PREDICCIONES DE IA =============================
+#aqui lo que hacemos es que cuando iniciamos el servidor cargamos las prediccones dentro de la base de datos
+@app.on_event("startup")
+async def cargar_prediccoines_IA():
+    try:
+        try:
+            with open("config_sistema.json", "r") as f:
+                confi = json.load(f)
+                frecuencia = confi.get("frecuencia_analisis", "Semanal")
+                margen = confi.get("margen_vencimiento", 30)
+        except FileNotFoundError:
+            frecuencia = "Semanal" #dejamos este dato por si ocurre un error al abrir el json
+            margen = 30
+
+        fecha_hoy = datetime.now()
+        semana = fecha_hoy.weekday()
+
+        ultima_ejecucion = ajuste.consultas_ajuste_frecuencia()
+
+        ya_ejecuto_semana = False
+        ya_ejecuto_hoy = False
+
+        if ultima_ejecucion:
+            semana_actual = fecha_hoy.isocalendar()[1]
+            ano_actual = fecha_hoy.year
+
+            semana_ultima = ultima_ejecucion.isocalendar()[1]
+            ano_ultimo = ultima_ejecucion.year
+
+            if semana_ultima == semana_actual and ano_ultimo == ano_actual:
+                ya_ejecuto_semana = True
+            if ultima_ejecucion.date() == fecha_hoy:
+                ya_ejecuto_hoy = True
+        
+        #ademas configuramos con los ajuste para activar las predicciones de la IA 
+        if frecuencia == "Inmediato":
+            p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
+        elif frecuencia == "Diario" and not ya_ejecuto_hoy:
+            p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
+        elif frecuencia == "Semanal" and semana == 0 and not ya_ejecuto_semana:
+            p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
+        
+        lotes_riesgo = ajuste.consulta_ajuste_criticos(margen)
+        if lotes_riesgo:
+            pass
+
+    except Exception as e:
+        print(f"Error al obtener los datos: {e}")
 
 #========================== INICIO DE SESION =============================
 
@@ -48,7 +110,6 @@ async def procesar_login(request: Request, username: str = Form(...), password: 
                 "request": request,
                 "mensaje": "Error credenciales incorrectas"
             })
-
 
 #========================== REGISTRAR =============================
 
@@ -92,7 +153,7 @@ async def procesar_registrardor(request: Request,
 
 #========================== DASHBOARD =============================
 
-@app.get("/Inicio", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_entrada))
+@app.get("/Inicio", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def inicio_principal(request: Request, tab: str = Query("principal")):
     tab_actual = tab
     #========================== SELECTOR DE PLANTILLA =============================
@@ -103,27 +164,31 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
     #nombre tal cual lo espera el html para cambiar de manera dinamica la plantilla que se esta mostrando en el dashboard
     stats = {}
     auditoria_data = {}
+    analisis_data = {}
+    alerta = {}
     logs_list = []
 
 
     #========================== PRINCIPAL =============================
-    #ya con esta funcion realiza la consulta para luego enviarle en la peticion de fastapi
+    #ya con esta funcion realiza la consulta para luego enviarla en la peticion de fastapi
     if tab_actual == "principal":
         stats = consulta.consultas_globales_principal()
 
     #========================== AUDITORIA =============================
+    #de igual forma con esta funcion realiza la consulta para luego enviarla en la peticion de fastapi
     elif tab_actual == "auditoria":
         auditoria_data, logs_list = consulta.consultas_auditoria()
 
     #========================== ANALISIS =============================
     elif tab_actual == "analisis":
-        pass
+        analisis_data, alerta = consulta.consultas_globales_analisis()
 
-    
     return plantillas.TemplateResponse("Inicio/inicio.html", {"request": request, 
                                                               "stats": stats, 
                                                               "auditoria_data": auditoria_data, 
-                                                              "logs_list": logs_list})
+                                                              "logs_list": logs_list,
+                                                              "analisis_data": analisis_data,
+                                                              "alerta": alerta})
 
 #========================== INVENTARIO =============================
 
@@ -141,21 +206,97 @@ async def formulario_salida(request: Request):
 
 #========================== AJUSTES =============================
 
-@app.get("/Ajuste", response_class=HTMLResponse)
+@app.get("/Ajuste", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def hacer_ajuste(request: Request):
-    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request})
+    try:
+        with open("config_sistema.json", "r") as f:
+            datos = json.load(f)  
+    except FileNotFoundError:
+        datos = {
+            "margen_vencimiento": 30,
+            "frecuencia_analisis": "Semanal",
+            "server": "localhost"
+        }
+    farmacia = ajuste.obtener_ajuste_farmacia()
+    usuario = {
+        "nombre": request.session.get('usuario'),
+        "id": request.session.get('rol')
+    }
+
+    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request,
+                                                              "op": usuario,
+                                                              "config": datos,
+                                                              "farmacia": farmacia})
+
+#llamamos a la ruta que hace referencia el html para ejecutar la logica
+@app.post("/ajustes/guardar-parametros", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
+def guardar_parametros(request: Request,
+                       margen_vencimiento: str = Form(None),
+                       frecuencia_analisis: str = Form(None)):
+    try:
+        #hacemos un diccionario para usarlo luego
+        datos = {
+            "margen_vencimiento": margen_vencimiento,
+            "frecuencia_analisis": frecuencia_analisis,
+            "server": "localhost",
+            "correo": os.getenv("CORREO")
+        }
+        with open("config_sistema.json", "r") as f:
+            json.dump(datos, f)
+        
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+    
+@app.post("/ajustes/actualizar-datos", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
+def actualizacion_datos(request: Request,
+                        nombre_farmacia: str = Form(None),
+                        codigo_sucursal: str = Form(None),
+                        ubicacion: str = Form(None)):
+    try:
+        ajuste.modificar_ajuste_farmacia(nombre_farmacia, codigo_sucursal, ubicacion)
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+
+@app.post("/ajustes/cambiar-rol", response_class=HTMLResponse, dependencies=[Depends(seguridad.Verificamos_al_papa_de_los_helados)])
+def cambio_rol(request: Request,
+               usuario_id: int = Form(...),
+               nuevo_rol_id: int = Form(...)):
+    try:
+        ajuste.cambio_rol(nuevo_rol_id, usuario_id)
+        return RedirectResponse(url="/Ajuste", status_code=303)
+    except Exception as e:
+        print(f"Error: {e}")
+        return RedirectResponse(url="/Ajuste?error=true", status_code=303)
+    
 
 #========================== REPORTES =============================
 
-@app.get("/Reportes", response_class=HTMLResponse)
-async def generacion_de_reportes(request: Request):
-    return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request})
+@app.get("/Reportes", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
+async def generacion_de_reportes(request: Request,
+                                 fecha_inicio: str = Query(None),
+                                 fecha_fin: str = Query(None)):
+    #de normal las fechas estaran en none pero las vamos a calcular ahora por los 30 dias automaticamente
+    if not fecha_fin:
+        fecha_fin = datetime.now().strftime("%Y-%m-%d")
+    if not fecha_inicio:
+        fecha_inicio = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
+    
+    datos_reportes = reportes.consulta_reporte(fecha_inicio, fecha_fin)
+
+    return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request,
+                                                                  "reportes": datos_reportes,
+                                                                  "filtros": {"inicio": fecha_inicio, "fin": fecha_fin},
+                                                                  "mov": datos_reportes["movimientos"]})
 
 #========================== ADMIN =============================
 
-@app.get("/Admin", response_class=HTMLResponse, dependencies=Depends(seguridad.verificar_rol_administrativo))
-async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.obtener_usuario_activo)):
-    datos_admin = consulta.consultas_admin(usuario_activo)
+@app.get("/Admin", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
+async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.verificar_entrada)):
+    datos_admin = admin.consultas_admin(usuario_activo)
     return plantillas.TemplateResponse("Admin/admin.html", {"request": request,
                                                             "datos_admin": datos_admin["nombre_usuario"],
                                                             "total_productos": datos_admin["total_productos"],

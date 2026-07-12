@@ -1,10 +1,8 @@
-CREATE DATABASE  IF NOT EXISTS `farma_norte` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `farma_norte`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: farma_norte
 -- ------------------------------------------------------
--- Server version	9.5.0
+-- Server version	8.0.44
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -16,15 +14,6 @@ USE `farma_norte`;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
-SET @@SESSION.SQL_LOG_BIN= 0;
-
---
--- GTID state at the beginning of the backup 
---
-
-SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f1f6c9c-ce30-11f0-9067-1860249ddd2a:1-225,
-f19f5c68-cb95-11f0-aac4-00e26908fbb7:1-51';
 
 --
 -- Table structure for table `historial_movimientos`
@@ -73,7 +62,7 @@ CREATE TABLE `lote_inventario` (
   PRIMARY KEY (`id_lote`),
   UNIQUE KEY `uq_medicamento_lote` (`id_medicamento`,`numero_lote`),
   CONSTRAINT `lote_inventario_ibfk_1` FOREIGN KEY (`id_medicamento`) REFERENCES `medicamentos` (`id_medicamento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -82,6 +71,7 @@ CREATE TABLE `lote_inventario` (
 
 LOCK TABLES `lote_inventario` WRITE;
 /*!40000 ALTER TABLE `lote_inventario` DISABLE KEYS */;
+INSERT INTO `lote_inventario` VALUES (1,1,'LOT-IBU-101',100,'2028-05-30'),(2,2,'LOT-DES-102',60,'2027-10-15'),(3,3,'LOT-ACE-103',130,'2028-03-22'),(4,4,'LOT-LOR-104',50,'2027-08-12'),(5,5,'LOT-OME-105',120,'2028-01-20'),(6,6,'LOT-DIC-106',80,'2027-12-05'),(7,7,'LOT-LOS-107',90,'2028-06-15'),(8,8,'LOT-AMO-108',40,'2027-11-30');
 /*!40000 ALTER TABLE `lote_inventario` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +90,7 @@ CREATE TABLE `medicamentos` (
   `presentacion` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`id_medicamento`),
   UNIQUE KEY `codigo_barra` (`codigo_barra`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,6 +99,7 @@ CREATE TABLE `medicamentos` (
 
 LOCK TABLES `medicamentos` WRITE;
 /*!40000 ALTER TABLE `medicamentos` DISABLE KEYS */;
+INSERT INTO `medicamentos` VALUES (1,'101','Ibuprofeno 400 mg','Analgésico y antiinflamatorio no esteroideo para dolores moderados.','Caja de 20 tabletas'),(2,'102','Desloratadina 5 mg','Antihistamínico de acción prolongada que no produce somnolencia.','Caja de 10 tabletas'),(3,'103','Acetaminophen 500mg','Analgésico y antipirético para el alivio de la fiebre y malestares.','Caja de 24 tabletas'),(4,'104','Loratadina 10mg','Antihistamínico para el alivio de alergias y rinitis.','Caja de 10 tabletas'),(5,'105','Omeprazol 20mg','Protector gástrico para la acidez y reflujo.','Caja de 30 cápsulas'),(6,'106','Diclofenac Potásico 50mg','Analgésico y antiinflamatorio para dolores fuertes.','Caja de 20 tabletas'),(7,'107','Losartán Potásico 50mg','Antihipertensivo para el control de la presión alta.','Caja de 30 comprimidos'),(8,'108','Amoxicilina 500mg','Antibiótico para combatir infecciones bacterianas.','Caja de 16 cápsulas');
 /*!40000 ALTER TABLE `medicamentos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -198,7 +189,6 @@ LOCK TABLES `usuarios` WRITE;
 INSERT INTO `usuarios` VALUES (1,'Administrador','Sistema','Farma','Norte','superadmin','$2b$12$As7YwQd7P4I3rKeX1h2gZu6E3U6gH5o/N9/A/H3Yh2r3XG6p4qK1G',1),(2,'pepe',NULL,'Emeregildo',NULL,'pepe_gildo','$2b$12$GUNH6y7quSZ.j3cXt7qJmugCi9f0ysk2HYcNpmVKZcd/NfLY.r7vO',3);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
-SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -209,4 +199,4 @@ SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-02 22:11:43
+-- Dump completed on 2026-07-07 23:02:50
