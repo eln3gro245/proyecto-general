@@ -23,16 +23,17 @@
         <form action="/ajustes/guardar-parametros" method="POST">
             <div class="form-group">
                 <label>Margen de Alerta de Vencimiento (Días críticos)</label>
-                /* aqui lo que hacemos es pasarle el tiempo que quiere el administrador que le avisen del margen de  vencimiento de los medicamentos*/
                 <input type="number" name="margen_vencimiento" value="{{ config.margen_vencimiento }}" min="1">
             </div>
             <div class="form-group">
                 <label>Frecuencia de Análisis Predictivo</label>
-                /* vemos el tiempo con el que se hacen la predicciones de la IA*/
                 <select type="text" name="frecuencia_analisis" value="{{ config.frecuencia_analisis }}">
-                    <option value="Inmediato" {% if config.frecuencia_analisis == 'Inmediato' %}selected{% endif %}>Manual(Ejecutar Ahora)</option>
-                    <option value="Diario" {% if config.frecuencia_analisis == 'Diario' %}selected{% endif %}>Diario</option>
-                    <option value="Semanal" {% if config.frecuencia_analisis == 'Semanal' %}selected{% endif %}>Semanal</option>
+                    <option value="Inmediato" {% if config.frecuencia_analisis=='Inmediato' %}selected{% endif %}>
+                        Manual(Ejecutar Ahora)</option>
+                    <option value="Diario" {% if config.frecuencia_analisis=='Diario' %}selected{% endif %}>Diario
+                    </option>
+                    <option value="Semanal" {% if config.frecuencia_analisis=='Semanal' %}selected{% endif %}>Semanal
+                    </option>
                 </select>
             </div>
             <div class="form-group">
@@ -71,7 +72,7 @@
                 <th>Nombre del Operador</th>
                 <th>Rol Asignado</th>
                 <th>Módulo de Acceso</th>
-                
+
                 {% if user_role == 1 %}
                 <th>Gestión de Roles (Super Admin)</th>
                 {% endif %}
@@ -82,17 +83,17 @@
             <tr>
                 <td>{{ op.nombre }}</td>
                 <td>{{ op.rol }}</td>
-                
+
                 {% if user_role == 1 %}
                 <td>
                     <form action="/ajustes/cambiar-rol" method="POST" class="inline-form">
                         <input type="hidden" name="usuario_id" value="{{ op.id }}">
-                        
+
                         <select name="nuevo_rol_id" class="select-rol">
-                            <option value="2" {% if op.rol_id == 2 %}selected{% endif %}>Admin</option>
-                            <option value="3" {% if op.rol_id == 3 %}selected{% endif %}>Cajero</option>
+                            <option value="2" {% if op.rol_id==2 %}selected{% endif %}>Admin</option>
+                            <option value="3" {% if op.rol_id==3 %}selected{% endif %}>Cajero</option>
                         </select>
-                        
+
                         <button type="submit" class="btn-primary btn-sm">Actualizar</button>
                     </form>
                 </td>

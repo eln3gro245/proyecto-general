@@ -61,12 +61,14 @@ async def cargar_prediccoines_IA():
             semana_actual = fecha_hoy.isocalendar()[1]
             ano_actual = fecha_hoy.year
 
-            semana_ultima = ultima_ejecucion.isocalendar()[1]
-            ano_ultimo = ultima_ejecucion.year
+            ejecucion = ultima_ejecucion[0]
+
+            semana_ultima = ejecucion.isocalendar()[1]
+            ano_ultimo = ejecucion.year
 
             if semana_ultima == semana_actual and ano_ultimo == ano_actual:
                 ya_ejecuto_semana = True
-            if ultima_ejecucion.date() == fecha_hoy:
+            if ejecucion.date() == fecha_hoy.date():
                 ya_ejecuto_hoy = True
         
         #ademas configuramos con los ajuste para activar las predicciones de la IA 
@@ -200,7 +202,11 @@ async def inventario(request: Request):
     return plantillas.TemplateResponse("Inventario/inventario.html", {"request": request,
                                                                       "medicamentos": inventario})
 
-@app.post("/Inventario/Entrada", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
+@app.get("/inventario/entrada", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
+async def get_entrada(request: Request):
+    return plantillas.TemplateResponse("Inventario/entrada.html", {"request": request})
+
+@app.post("/inventario/entrada", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
 async def formulario_entrada(request: Request,
                              nombre: str = Form(...),
                              categoria: str = Form(...),
@@ -216,7 +222,17 @@ async def formulario_entrada(request: Request,
         print(f"Error en entrada: {e}")
         return {"error": "No se pudo registrar la entrada"}
 
-@app.post("/Inventario/Salida", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
+@app.get("/inventario/salida", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
+async def get_salida(request: Request):
+    medicamentos = ver.obtener_medicamentos_para_select()
+    usuario_actual = request.session.get('usuario')
+    return plantillas.TemplateResponse("Inventario/salida.html", {
+        "request": request,
+        "medicamentos": medicamentos,
+        "current_user": usuario_actual
+    })
+
+@app.post("/inventario/salida", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
 async def formulario_salida(request: Request,
                             medicamento_id: str = Form(...),
                             cantidad: int = Form(...),
@@ -315,7 +331,7 @@ async def reportes(request: Request,
     return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request,
                                                                   "reportes": datos_reportes,
                                                                   "filtros": {"inicio": fecha_inicio, "fin": fecha_fin},
-                                                                  "mov": datos_reportes["movimientos"]})
+                                                                  "movimientos_list": datos_reportes["movimientos"]})
 
 #========================== ADMIN =============================
 

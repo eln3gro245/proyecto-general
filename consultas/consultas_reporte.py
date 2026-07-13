@@ -10,19 +10,20 @@ def consulta_reporte(inicio, fin):
             sql_despachos = """
                 SELECT 
                     IFNULL(SUM(h.cantidad), 0) AS total,
-                    IFNULL(AVG(p.cantidad_predicha)) AS tendencia
+                    IFNULL(AVG(p.cantidad_predicha), 0) AS tendencia
                 FROM historial_movimientos h
-                INNER JOIN predicciones_demanda p ON l.id_medicamento = p.id_medicamento
-                WHERE tipo_movimiento = 'Salida'
-                    AND DATE(fecha_hora) BETWEEN %s AND %s;
+                INNER JOIN lote_inventario l ON h.id_lote = l.id_lote
+                LEFT JOIN predicciones_demanda p ON l.id_medicamento = p.id_medicamento
+                WHERE h.tipo_movimiento = 'Salida'
+                    AND DATE(h.fecha_hora) BETWEEN %s AND %s;
             """
             datos = (inicio, fin)
 
             cursor.execute(sql_despachos, datos)
-            despachos = cursor.fetchall()
+            despachos = cursor.fetchone()
 
-            despacho_total = despachos["total"]
-            ia = despachos["tendencia"]
+            despacho_total = despachos["total"] if despachos and despachos["total"] is not None else 0
+            ia = despachos["tendencia"] if despachos and despachos["tendencia"] is not None else 0
 
             #calculamos con la tendencia
             if despacho_total > ia and ia > 0:
@@ -66,7 +67,7 @@ def consulta_reporte(inicio, fin):
                 INNER JOIN medicamentos m ON l.id_medicamento = m.id_medicamento
                 INNER JOIN usuarios u ON h.id_usuario = u.id_usuario
                 WHERE DATE(h.fecha_hora) BETWEEN %s AND %s
-                PRDER BY h.fecha_hora DESC;
+                ORDER BY h.fecha_hora DESC;
             """
             cursor.execute(sql_movimientos, datos)
             movimientos = cursor.fetchall()

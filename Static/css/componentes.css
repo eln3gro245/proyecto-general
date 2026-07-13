@@ -12,6 +12,8 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.25s ease;
+    text-decoration: none;
+    outline: none;
 }
 
 /* Variante para el Boton Principal */
@@ -36,6 +38,20 @@
     background-color: #e2e8f0;
 }
 
+/* Variante Botón de Peligro / Salida (Rojo) */
+.btn-premium.danger {
+    background: linear-gradient(135deg, #b91c1c 0%, #ef4444 100%) !important;
+    color: white !important;
+    text-decoration: none;
+    border: none;
+}
+
+.btn-premium.danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    color: white;
+}
+
 
 /*  BADGES DE ALERTA Y PRIORIDAD (STOCK)  */
 .badge-priority {
@@ -48,19 +64,19 @@
 }
 
 /* Estados de alerta calculados dinámicamente desde el Backend */
-.badge-priority.critica { 
-    background-color: #fef2f2; 
-    color: var(--accent-danger); 
+.badge-priority.critica {
+    background-color: #fef2f2;
+    color: var(--accent-danger);
 }
 
-.badge-priority.alta { 
-    background-color: #fffbeb; 
-    color: var(--accent-warning); 
+.badge-priority.alta {
+    background-color: #fffbeb;
+    color: var(--accent-warning);
 }
 
-.badge-priority.estable { 
-    background-color: #ecfdf5; 
-    color: var(--accent-green); 
+.badge-priority.estable {
+    background-color: #ecfdf5;
+    color: var(--accent-green);
 }
 
 /* Contenedor del área de usuario */

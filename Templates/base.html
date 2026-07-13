@@ -1,34 +1,36 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Farma Norte - Dashboard{% endblock %}</title>
-    
+
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
+
     <link rel="stylesheet" href="{{ url_for('static', path='css/variables.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/componentes.css') }}">
-    
+    <link rel="stylesheet" href="{{ url_for('static', path='css/inicio.css') }}">
+
     {% block extra_css %}{% endblock %}
 </head>
+
 <body>
 
     <div class="app-container">
-        
+
         {% include 'Componentes/sidebar.html' %}
 
         <main class="main-content">
             <section class="page-card">
-                <header class="top-header">
-                    {% block content %}{% endblock %}
-                </header>
+                {% block content %}{% endblock %}
             </section>
         </main>
-        
+
     </div>
 
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

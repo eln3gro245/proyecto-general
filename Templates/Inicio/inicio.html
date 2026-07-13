@@ -2,11 +2,19 @@
 
 {% block title %}Inicio - Farma Norte{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/inicio.css') }}">
+{% endblock %}
+
 {% block content %}
+<header class="page-header">
+    <h2>Panel de Control</h2>
+</header>
 <div class="sub-navigation">
-    <a href="/Inicio?tab=principal" class="tab-link {% if active_tab == 'principal' %}active{% endif %}">Panel Principal</a>
+    <a href="/Inicio?tab=principal" class="tab-link {% if active_tab == 'principal' %}active{% endif %}">Panel
+        Principal</a>
     <a href="/Inicio?tab=analisis" class="tab-link {% if active_tab == 'analisis' %}active{% endif %}">Análisis</a>
-    
+
     {% if user_role == 1 %}
     <a href="/Inicio?tab=auditoria" class="tab-link {% if active_tab == 'auditoria' %}active{% endif %}">Auditoría</a>
     {% endif %}
@@ -14,12 +22,12 @@
 
 <section class="tab-content">
     {% if active_tab == 'principal' %}
-        {% include 'Inicio/tabs/principal.html' %}
+    {% include 'Inicio/tabs/principal.html' %}
     {% elif active_tab == 'analisis' %}
-        {% include 'Inicio/tabs/analisis.html' %}
-        
+    {% include 'Inicio/tabs/analisis.html' %}
+
     {% elif active_tab == 'auditoria' and user_role == 1 %}
-        {% include 'Inicio/tabs/auditoria.html' %}
+    {% include 'Inicio/tabs/auditoria.html' %}
     {% endif %}
 </section>
 {% endblock %}

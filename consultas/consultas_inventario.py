@@ -133,3 +133,23 @@ def salida_inventario(id_medicamento, cantidad, motivo, usuario):
         if conn:
             conn.close()
 
+def obtener_medicamentos_para_select():
+    """Obtiene la lista de medicamentos con stock disponible para el select de salida."""
+    try:
+        conn = bd.conexion_db()
+        with conn.cursor(pymysql.cursors.DictCursor) as cursor:
+            sql = """
+                SELECT l.numero_lote, m.nombre, l.stock_actual
+                FROM lote_inventario l
+                INNER JOIN medicamentos m ON l.id_medicamento = m.id_medicamento
+                WHERE l.stock_actual > 0
+                ORDER BY m.nombre ASC
+            """
+            cursor.execute(sql)
+            return cursor.fetchall()
+    except Exception as e:
+        print(f"❌ Error al obtener medicamentos: {e}")
+        return []
+    finally:
+        if conn:
+            conn.close()

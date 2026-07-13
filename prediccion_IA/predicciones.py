@@ -6,7 +6,7 @@ import joblib
 
 def generar_y_guerdar_predicciones_semanales():
     # antes que nada cargamos el modelo de IA que nosotros mismo entrenamos
-    modelo = joblib.load('modelo_xgboots.pkl')
+    modelo = joblib.load('modelo_xgboost.pkl')
 
     fecha_actual = datetime.now()
 

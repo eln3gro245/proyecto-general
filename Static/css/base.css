@@ -1,17 +1,20 @@
 /* --- LAYOUT Y ESTRUCTURA GLOBAL --- */
 
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: var(--bg-sidebar); 
+    background-color: var(--bg-sidebar);
     font-family: 'Inter', sans-serif;
-    overflow: hidden; /* Evita scrolls dobles en toda la página */
+    overflow: hidden;
+    /* Evita scrolls dobles en toda la página */
 }
 
 .app-container {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 /* --- SIDEBAR: Menú Lateral --- */
@@ -23,8 +26,10 @@ html, body {
     padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    flex-shrink: 0; /* Mantiene su tamaño original */
-    overflow-y: auto; /* Scroll interno si el menú es muy largo */
+    flex-shrink: 0;
+    /* Mantiene su tamaño original */
+    overflow-y: auto;
+    /* Scroll interno si el menú es muy largo */
 }
 
 .sidebar-header {
@@ -34,7 +39,8 @@ html, body {
     padding: 0 1rem;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centra el logo y el texto en el header */
+    align-items: center;
+    /* Centra el logo y el texto en el header */
     text-align: center;
 }
 
@@ -42,29 +48,35 @@ html, body {
 .logo-container {
     width: 120px;
     height: 120px;
-    background-color: #ffffff; /* Fondo blanco del logo integrado al diseño */
-    border-radius: 12px;       /* Esquinas redondeadas suaves */
-    padding: 10px;             /* Espacio interno para que el logo no toque el borde */
+    background-color: #ffffff;
+    /* Fondo blanco del logo integrado al diseño */
+    border-radius: 12px;
+    /* Esquinas redondeadas suaves */
+    padding: 10px;
+    /* Espacio interno para que el logo no toque el borde */
     margin-bottom: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2); /* Sombra para dar profundidad */
-    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    /* Sombra para dar profundidad */
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .sidebar-logo {
     max-width: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 8px; /* Suaviza la imagen dentro del contenedor */
+    border-radius: 8px;
+    /* Suaviza la imagen dentro del contenedor */
 }
 
 .nav-links {
     list-style: none;
     margin: 0;
     padding: 0;
-    flex-grow: 1; /* Distribuye el espacio correctamente */
+    flex-grow: 1;
+    /* Distribuye el espacio correctamente */
 }
 
 .nav-links li a {
@@ -94,7 +106,8 @@ html, body {
 }
 
 .sidebar-footer {
-    margin-top: auto; /* Empuja el footer al final */
+    margin-top: auto;
+    /* Empuja el footer al final */
     padding-top: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -102,17 +115,36 @@ html, body {
 /* --- MAIN CONTENT: Área de Trabajo --- */
 .main-content {
     flex: 1;
+    min-width: 0;
     padding: 16px 16px 16px 0;
     display: flex;
     flex-direction: column;
+    height: 100vh;
     overflow: hidden;
 }
 
 .page-card {
     flex: 1;
+    width: 100%;
+    box-sizing: border-box;
     background-color: var(--bg-card);
     border-top-left-radius: var(--radius-card);
     padding: 32px;
-    overflow-y: auto; /* Scroll independiente para el contenido */
+    overflow-y: auto;
+    /* Scroll independiente para el contenido */
     box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* --- ENCABEZADO DE PAGINA --- */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    font-size: 1.5rem;
+    color: var(--text-main);
+    margin: 0;
 }
