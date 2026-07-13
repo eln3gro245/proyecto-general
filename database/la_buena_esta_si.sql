@@ -1,8 +1,10 @@
+CREATE DATABASE  IF NOT EXISTS `farma_norte` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `farma_norte`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: localhost    Database: farma_norte
 -- ------------------------------------------------------
--- Server version	8.0.44
+-- Server version	9.5.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -14,6 +16,15 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+SET @MYSQLDUMP_TEMP_LOG_BIN = @@SESSION.SQL_LOG_BIN;
+SET @@SESSION.SQL_LOG_BIN= 0;
+
+--
+-- GTID state at the beginning of the backup 
+--
+
+SET @@GLOBAL.GTID_PURGED=/*!80000 '+'*/ '1f1f6c9c-ce30-11f0-9067-1860249ddd2a:1-263,
+f19f5c68-cb95-11f0-aac4-00e26908fbb7:1-51';
 
 --
 -- Table structure for table `historial_movimientos`
@@ -177,7 +188,7 @@ CREATE TABLE `usuarios` (
   UNIQUE KEY `usuario` (`usuario`),
   KEY `id_rol` (`id_rol`),
   CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`id_rol`) REFERENCES `roles` (`id_rol`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -186,9 +197,10 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Administrador','Sistema','Farma','Norte','superadmin','$2b$12$As7YwQd7P4I3rKeX1h2gZu6E3U6gH5o/N9/A/H3Yh2r3XG6p4qK1G',1),(2,'pepe',NULL,'Emeregildo',NULL,'pepe_gildo','$2b$12$GUNH6y7quSZ.j3cXt7qJmugCi9f0ysk2HYcNpmVKZcd/NfLY.r7vO',3);
+INSERT INTO `usuarios` VALUES (1,'Administrador','Sistema','Farma','Norte','superadmin','$2b$12$tYz2z7dhhrlPICG7AfAKuuntGMH2QfIdNJikIwj6AZVNJ4rkN4yyG',1),(2,'pepe',NULL,'Emeregildo',NULL,'pepe_gildo','$2b$12$GUNH6y7quSZ.j3cXt7qJmugCi9f0ysk2HYcNpmVKZcd/NfLY.r7vO',3),(3,'emeregildo',NULL,'gutierrez',NULL,'emegildo','$2b$12$l2JRYJv4TvTkqZcO1u4y/.ANsqCmH4.qSJvJDi1dxUft1Q2XTKyCq',3);
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
+SET @@SESSION.SQL_LOG_BIN = @MYSQLDUMP_TEMP_LOG_BIN;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -199,4 +211,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-07-07 23:02:50
+-- Dump completed on 2026-07-13  0:10:28

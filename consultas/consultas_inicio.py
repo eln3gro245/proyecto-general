@@ -131,7 +131,7 @@ def consultas_globales_auditoria():
             #tercera consulta: obtenemos los datos de quien realizo los movimientos de inventario
             sql_logs = """
                 SELECT 
-                    CONCAT(u.pri_nom, ' ', u.pri_apa) AS usuario,
+                    CONCAT(u.pri_nom, ' ', u.pri_ape) AS usuario,
                     h.tipo_movimiento AS accion,
                     h.fecha_hora AS fecha
                     FROM historial_movimientos h
@@ -168,7 +168,7 @@ def consultas_globales_analisis():
                     ROUND(
                         IF(
                             IFNULL(SUM(CASE WHEN h.tipo_movimiento = 'Salida' THEN h.cantidad END), 0) > 0,
-                            ((p.cantidad_predicha - SUM(CASE WHEN h.tipo_movimiento = 'Salida' THEN h.cantidad END)) / SUM(CASE WHEN h.tipo_movimiento = 'Salida' THEN h.cantidad END)) * 100,
+                            ((p.cantidad_predicha - SUM(CASE WHEN h.tipo_movimiento = 'Salida' THEN h.cantidad END)) / SUM(CASE WHEN h.tipo_movimiento = 'Salida' THEN h.cantidad END)) * 100, 0
                         ), 1
                     ) AS incremento_porcentual
                 FROM predicciones_demanda p

@@ -44,7 +44,7 @@ def consulta_ajuste_criticos(margen: int):
         if conn:
             conn.close()
 
-def obtener_ajuste_farmacia(nombre, codigo, ubi):
+def obtener_ajuste_farmacia():
     try:
         conn = bd.conexion_db()
 

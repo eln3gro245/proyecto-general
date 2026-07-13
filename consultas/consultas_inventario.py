@@ -14,7 +14,7 @@ def obtener_inventario():
                     l.numero_lote AS lote,
                     IFNULL(m.presentacion, 'General') AS categoria,
                     IFNULL(l.stock_actual, 0) AS stock,
-                    CONCAT('Estante'(m.id_medicamento % 5) + 1, '-A') AS estante,
+                    CONCAT((m.id_medicamento % 5) + 1, '-A') AS estante,
                     CASE
                         WHEN l.stock_actual = 0 THEN 'danger'
                         WHEN l.stock_actual < 15 THEN 'warning'

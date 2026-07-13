@@ -1,7 +1,7 @@
 from fastapi.responses import HTMLResponse, RedirectResponse
 from starlette.middleware.sessions import SessionMiddleware
 import seguridad.verificar_sesiones_roles as seguridad
-from consultas import consultas_reporte as reportes
+from consultas import consultas_reporte as reporte
 from consultas import consultas_inventario as ver
 from consultas import conultas_ajuste as ajuste
 from consultas import consultas_admin as admin
@@ -155,7 +155,7 @@ async def procesar_registrardor(request: Request,
 #========================== DASHBOARD =============================
 
 @app.get("/Inicio", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
-async def inicio_principal(request: Request, tab: str = Query("principal")):
+async def principal(request: Request, tab: str = Query("principal")):
     tab_actual = tab
     #========================== SELECTOR DE PLANTILLA =============================
 
@@ -189,12 +189,13 @@ async def inicio_principal(request: Request, tab: str = Query("principal")):
                                                               "auditoria_data": auditoria_data, 
                                                               "logs_list": logs_list,
                                                               "analisis_data": analisis_data,
-                                                              "alerta": alerta})
+                                                              "alerta": alerta,
+                                                              "active_tab": tab_actual})
 
 #========================== INVENTARIO =============================
 
 @app.get("/Inventario", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
-async def ver_inventario(request: Request):
+async def inventario(request: Request):
     inventario = ver.obtener_inventario()
     return plantillas.TemplateResponse("Inventario/inventario.html", {"request": request,
                                                                       "medicamentos": inventario})
@@ -231,7 +232,7 @@ async def formulario_salida(request: Request,
 #========================== AJUSTES =============================
 
 @app.get("/Ajuste", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_entrada)])
-async def hacer_ajuste(request: Request):
+async def ajustes(request: Request):
     try:
         with open("config_sistema.json", "r") as f:
             datos = json.load(f)  
@@ -247,7 +248,7 @@ async def hacer_ajuste(request: Request):
         "id": request.session.get('rol')
     }
 
-    return plantillas.TemplateResponse("Ajuste/ajuste.html", {"request": request,
+    return plantillas.TemplateResponse("Ajustes/ajustes.html", {"request": request,
                                                               "op": usuario,
                                                               "config": datos,
                                                               "farmacia": farmacia})
@@ -300,16 +301,16 @@ def cambio_rol(request: Request,
 #========================== REPORTES =============================
 
 @app.get("/Reportes", response_class=HTMLResponse, dependencies=[Depends(seguridad.verificar_rol_administrativo)])
-async def generacion_de_reportes(request: Request,
-                                 fecha_inicio: str = Query(None),
-                                 fecha_fin: str = Query(None)):
+async def reportes(request: Request,
+                   fecha_inicio: str = Query(None),
+                   fecha_fin: str = Query(None)):
     #de normal las fechas estaran en none pero las vamos a calcular ahora por los 30 dias automaticamente
     if not fecha_fin:
         fecha_fin = datetime.now().strftime("%Y-%m-%d")
     if not fecha_inicio:
         fecha_inicio = (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d")
     
-    datos_reportes = reportes.consulta_reporte(fecha_inicio, fecha_fin)
+    datos_reportes = reporte.consulta_reporte(fecha_inicio, fecha_fin)
 
     return plantillas.TemplateResponse("Reportes/reportes.html", {"request": request,
                                                                   "reportes": datos_reportes,
@@ -326,3 +327,15 @@ async def ver_admin(request: Request, usuario_activo: str = Depends(seguridad.ve
                                                             "total_productos": datos_admin["total_productos"],
                                                             "ventas_dia": datos_admin["ventas_dia"],
                                                             "alertas_criticas": datos_admin["alertas_criticas"]})
+
+#========================== CERRAR SESION =============================
+
+@app.get("/Logout")
+async def logout(request: Request):
+    # Limpia por completo la sesión del usuario
+    request.session.clear() 
+    
+    # Redirige a la página de login 
+    response = RedirectResponse(url="/", status_code=303)
+    
+    return response

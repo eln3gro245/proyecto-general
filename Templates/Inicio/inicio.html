@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="sub-navigation">
-    <a href="/?tab=principal" class="tab-link {% if active_tab == 'principal' %}active{% endif %}">Panel Principal</a>
-    <a href="/?tab=analisis" class="tab-link {% if active_tab == 'analisis' %}active{% endif %}">Análisis</a>
+    <a href="/Inicio?tab=principal" class="tab-link {% if active_tab == 'principal' %}active{% endif %}">Panel Principal</a>
+    <a href="/Inicio?tab=analisis" class="tab-link {% if active_tab == 'analisis' %}active{% endif %}">Análisis</a>
     
     {% if user_role == 1 %}
-    <a href="/?tab=auditoria" class="tab-link {% if active_tab == 'auditoria' %}active{% endif %}">Auditoría</a>
+    <a href="/Inicio?tab=auditoria" class="tab-link {% if active_tab == 'auditoria' %}active{% endif %}">Auditoría</a>
     {% endif %}
 </div>
 
