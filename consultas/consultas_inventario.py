@@ -12,7 +12,7 @@ def obtener_inventario():
                 SELECT
                     m.nombre,
                     l.numero_lote AS lote,
-                    IFNULL(m.presentacion, 'General') AS categoria,
+                    IFNULL(m.categoria, 'General') AS categoria,
                     IFNULL(l.stock_actual, 0) AS stock,
                     CONCAT((m.id_medicamento % 5) + 1, '-A') AS estante,
                     CASE
@@ -52,9 +52,13 @@ def entrada_inventario(nom, cate, can, lote, fecha_ven, usuario):
             id_usuario = cursor.fetchone()[0]
 
             #buscamos el nombre y la categoria para ignorar la insercion
-            sql_insertar = "INSERT IGNORE INTO medicamentos (nombre, presentacion) VALUES (%s, %s);"
+            sql_insertar = "INSERT IGNORE INTO medicamentos (nombre, categoria) VALUES (%s, %s);"
             datos_1 = (nom, cate)
             cursor.execute(sql_insertar, datos_1)
+
+            #si el medicamento ya existia, actualizamos su categoria de todas formas
+            sql_actualizar_cat = "UPDATE medicamentos SET categoria = %s WHERE nombre = %s"
+            cursor.execute(sql_actualizar_cat, (cate, nom))
 
             #buscamos el id del lote
             sql_med = "SELECT id_medicamento FROM medicamentos WHERE nombre = %s"

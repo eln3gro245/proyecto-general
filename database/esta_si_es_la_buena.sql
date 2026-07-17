@@ -125,6 +125,7 @@ CREATE TABLE `medicamentos` (
   `nombre` varchar(200) NOT NULL,
   `descripcion` text,
   `presentacion` varchar(100) DEFAULT NULL,
+  `categoria` varchar(150) DEFAULT NULL,
   PRIMARY KEY (`id_medicamento`),
   UNIQUE KEY `codigo_barra` (`codigo_barra`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;

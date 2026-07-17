@@ -1,5 +1,13 @@
 /* unificamos ambos estilos por que sirven para ambos y tambien con clases personalizadas para el login*/
 
+/* Sobrescribir el overflow:hidden del body/html que viene de variables.css */
+html,
+body {
+    overflow: auto !important;
+    height: auto !important;
+}
+
+
 /* Fondo general que usa tu gris azulado oscuro de la barra lateral */
 .auth-body {
     margin: 0;
@@ -10,8 +18,9 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
+    align-items: flex-start; /* Permite scroll cuando el contenido es más alto que la pantalla */
+    padding: 40px 20px;
+    overflow-y: auto;
 }
 
 /* Tarjeta contenedora con el radio de 24px idéntico a tu app interna */
