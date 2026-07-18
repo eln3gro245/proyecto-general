@@ -58,7 +58,7 @@ def generar_y_guerdar_predicciones_semanales():
                     #ahora tenemos la alerta critica de los medicamentos 
                     if cantidad_predicha > 50: alerta = 'ALTA'
                     elif cantidad_predicha > 30: alerta = 'MEDIA'
-                    elif cantidad_predicha > 10: alerta = 'BAJA'
+                    else: alerta = 'BAJA'
 
                     #ahora para terminar realizamos una consulta sql para guardar los datos de la base de datos
                     sql = """
@@ -67,7 +67,7 @@ def generar_y_guerdar_predicciones_semanales():
                         VALUES(%s,%s,%s,%s,%s)
                     """
 
-                    cursor.execute(sql, (id_med, fecha_futura.date(), cantidad_predicha, factor_climatico, alerta))
+                    cursor.execute(sql, (id_med, fecha_futura.date(), cantidad_predicha, clima, alerta))
 
             conn.commit()
     except Exception as e:

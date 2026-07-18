@@ -43,7 +43,7 @@ def enviar_correo():
 
     try:
         #buscamos el html para el estilo del correo
-        plantilla = env_jinja.get_template("Componentes\correos.html")
+        plantilla = env_jinja.get_template("Componentes/correos.html")
         html_renderizado = plantilla.render(producto=lista)
         msg.attach(MIMEText(html_renderizado, "html", "utf-8"))
 

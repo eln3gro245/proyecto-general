@@ -17,11 +17,13 @@
                 </tr>
             </thead>
             <tbody>
+                {% for prod in producto %}
                 <tr>
-                    <td>{{'producto.medicamento'}}</td>
-                    <td class="text-center">{{'producto.cantidad_sugerida'}}</td>
-                    <td>{{'producto.motivo'}}</td>
+                    <td>{{ prod.medicamento }}</td>
+                    <td class="text-center">{{ prod.cantidad_sugerida }}</td>
+                    <td>{{ prod.motivo }}</td>
                 </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>

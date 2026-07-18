@@ -10,28 +10,45 @@ def obtener_predicciones():
         #igual que en otros modulos usamos el with para habilitar el cursor 
         with conn.cursor(pymysql.cursors.DictCursor) as cursor:
             sql_prediccion = """
-                SELECT
-                    m.nombre AS medicamento
-                    p.cantidad_predicha AS cantidad_sugeridad
-                    p.factor_climatico
-                    p.probabilidad_alerta
-                FROM predicciones_demanda p
+                WITH UltimasPredicciones AS (
+                    SELECT 
+                        id_medicamento, 
+                        cantidad_predicha, 
+                        factor_climatico, 
+                        ROW_NUMBER() OVER (PARTITION BY id_medicamento ORDER BY id_prediccion DESC) as rn
+                    FROM predicciones_demanda
+                )
+                SELECT 
+                    m.nombre AS medicamento,
+                    SUM(p.cantidad_predicha) AS cantidad_sugerida,
+                    MAX(p.factor_climatico) AS factor_climatico
+                FROM UltimasPredicciones p
                 INNER JOIN medicamentos m ON p.id_medicamento = m.id_medicamento
-                WHERE DATE(p.creado_el) = CURDATE();
+                WHERE p.rn <= 7
+                GROUP BY m.id_medicamento, m.nombre;
             """
-        cursor.execute(sql_prediccion)
-        resultado = cursor.fetchall()
+            cursor.execute(sql_prediccion)
+            resultado = cursor.fetchall()
 
-        for fila in resultado:
-            motivo = f"Prediccion de demanda: {fila['probabilidad_alerta']}"
-            if fila['factor_climatico'] != 'Normal':
-                motivo += f"factor climatico: {fila['factor_climatico']}"
-            
-            prediccion_procesada.append({
-                "medicamento": fila["medicamento"],
-                "cantidad_sugerida": fila["cantidad_sugerida"],
-                "motivo": motivo
-            })
+            for fila in resultado:
+                cantidad_total = int(fila['cantidad_sugerida'])
+                
+                if cantidad_total > 350:
+                    alerta = 'ALTA'
+                elif cantidad_total > 210:
+                    alerta = 'MEDIA'
+                else:
+                    alerta = 'BAJA'
+
+                motivo = f"Alerta Semanal: {alerta}"
+                if fila['factor_climatico'] != 'Normal':
+                    motivo += f" (Clima: {fila['factor_climatico']})"
+                
+                prediccion_procesada.append({
+                    "medicamento": fila["medicamento"],
+                    "cantidad_sugerida": cantidad_total,
+                    "motivo": motivo
+                })
 
         return prediccion_procesada
     except Exception as e:

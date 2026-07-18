@@ -282,8 +282,12 @@ def guardar_parametros(request: Request,
             "server": "localhost",
             "correo": os.getenv("CORREO")
         }
-        with open("config_sistema.json", "r") as f:
+        with open("config_sistema.json", "w") as f:
             json.dump(datos, f)
+            
+        if frecuencia_analisis == "Inmediato":
+            p.generar_y_guerdar_predicciones_semanales()
+            correo.enviar_correo()
         
         return RedirectResponse(url="/Ajuste", status_code=303)
     except Exception as e:
